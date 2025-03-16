@@ -26,7 +26,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ## Key Issue
 
-- **Cold Resolver:** A new or inactive resolver has to query the root servers, leading to longer response times and unnecessary traffic.
+- **Cold Resolver:** A new or inactive resolver has to query the authoritative servers, leading to longer response times and unnecessary traffic.
 - **Caching:** Existing resolvers in the cluster might already have the data but cannot share it.
 
 ---
@@ -39,7 +39,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ## Why It Matters
 
-- **DNS Traffic:** Constant requests to root DNS servers increase internet traffic and strain the infrastructure.
+- **DNS Traffic:** Constant requests to authoritative DNS servers increase internet traffic and strain the infrastructure.
 - **Warm-Up Delays:** New resolvers (or cold resolvers) need time to populate their caches, causing slower responses.
 - **Efficiency Loss:** Without data sharing between resolvers, the system becomes inefficient when the same queries are made frequently.
 
