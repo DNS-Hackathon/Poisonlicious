@@ -1,0 +1,336 @@
+
+
+
+
+Internet Engineering Task Force                            S. Bortzmeyer
+Internet-Draft                                                     Afnic
+Intended status: Informational                             16 March 2025
+Expires: 17 September 2025
+
+
+                 Synchronizing caches of DNS resolvers
+                         draft-poisonlicious-00
+
+Abstract
+
+   Network of cooperating and mutually trusting DNS resolvers could
+   benefit from cache sharing, where one resolver would distribute the
+   result of a resolution to other resolvers.  This document
+   standardizes a protocol to do so.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 17 September 2025.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+
+
+
+
+Bortzmeyer              Expires 17 September 2025               [Page 1]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   2
+     1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  The protocol  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   5.  Operational Considerations  . . . . . . . . . . . . . . . . .   4
+   6.  Related and future work . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Related work  . . . . . . . . . . . . . . . . . . . . . .   4
+     6.2.  Future work . . . . . . . . . . . . . . . . . . . . . . .   4
+       6.2.1.  Negative answers  . . . . . . . . . . . . . . . . . .   4
+       6.2.2.  Transport of messages . . . . . . . . . . . . . . . .   5
+       6.2.3.  Packing of messages . . . . . . . . . . . . . . . . .   5
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   6
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+
+1.  Introduction
+
+   When an organisation operates a big network of DNS resolvers
+   [RFC1034] [RFC1035], for instance for an important public resolver
+   [RFC9499] (section 6), it may be a performance improvment to
+   distribute the result of the resolution process between the
+   resolvers.  This document standardizes how to to do so, using
+   blockchains (just kidding) and unicast messages to a set of pre-
+   configured peers.
+
+   TODO data from Quad9 to show that there is a caching improvment to
+   expect.  Measuring the efficiency of caching optimizations is hard!
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+1.2.  Terminology
+
+   Network of resolvers (TODO or resolver set?)
+      A set of resolvers working together under the same administration
+
+
+
+
+
+Bortzmeyer              Expires 17 September 2025               [Page 2]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
+   Peer (or peer resolver)
+      One of the other resolvers in the network
+
+   Originating resolver
+      A resolver sending data to its peers in the network
+
+   Receiving resolver (or receiving peer)
+      A resolver receiving data from one of its peers in the network
+
+   Resolver
+      As used in [RFC9499] section 6
+
+2.  The protocol
+
+   When completing a successful DNS resolution, the resolver transmits a
+   DNS message (with the Q/R bit set, since it is a response) to the
+   pre-configured peers, authenticating with TSIG [RFC8945].  TODO SIG0?
+   DoT?  No acknowledgment is sent or expected.
+
+   The resolver must send only data that it is sure of (for instance by
+   DNSSEC valitaion or because it came with the AA bit from the queried
+   server).  Since all of the netwok of resolvers are in the same
+   organizational domain, they MUST agree on the same policy for this
+   assessment.
+
+   Messages of this protocol are distinguished from other DNS messages
+   by the TSIG key they use (which must therefore be specific to this
+   protocol).  TODO or by a dedicated port?
+
+   This message MAY be the message received by the resolver from the
+   authoritative name servers or it MAY be a new message with data
+   composed from data already obtained by the resolver.  TODO privacy
+   risks when sending the question section?  Force its elision?
+
+   The EDNS section MUST be a new one, created to fit the needs of
+   successful transmission to the peer.  TODO what about ECS?
+
+   Each peer then MAY store the data in its cache.  The peer is not
+   supposed to do DNSSEC validation (there is not always all the
+   necessary data in the message).  TODO cache only what is in the
+   Answer section?  See above about assessing the trustiness of the
+   data.
+
+3.  IANA Considerations
+
+   None.  [RFC-Editor: you may delete this section]
+
+
+
+
+
+Bortzmeyer              Expires 17 September 2025               [Page 3]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
+4.  Security Considerations
+
+   The integrity and authenticity of the cached data is of course
+   critical.  DNSSEC would help but it is not yet universally deployed
+   and, moreover, the peer resolvers should not have to redo the
+   validation.  So, trust between the peer resolvers is expected.  One
+   way to do so is to have all of them under the same organisational
+   authority, as mandated here.
+
+   The channel between peers must be protected, preferrably with
+   cryptography (currently, TSIG is mandatory).
+
+   Encryption is less important than authentication since we transmit
+   only public data.  Nevertheless, it is better to be sure that the
+   channel between the peers is not open to snooping.
+
+5.  Operational Considerations
+
+   It is reminded that all resolvers in the network need to trust each
+   other, probably being in the same administrative domain.  This
+   specification is not meant to be deployed between unrelated
+   resolvers.
+
+   The netwok of peer resolvers have to be configured out-of-band
+   before.  The way to do it is out-of-scope for this specification.
+
+6.  Related and future work
+
+6.1.  Related work
+
+   [I-D.hl-dnsop-cache-filling] describes a mechanism to fill DNS caches
+   with data.  The format is, like in this document, standard DNS as
+   ween on the wire.
+
+6.2.  Future work
+
+6.2.1.  Negative answers
+
+   TODO What to do about them?  Transmit them?  (Be careful of the risk
+   of overloading receving peers for instance when there is a dictionary
+   attack.)  Can a receiving peer use [RFC8020] an/or [RFC8198] to
+   synthetize negative answers since it did not validate data itself?
+
+
+
+
+
+
+
+
+
+Bortzmeyer              Expires 17 September 2025               [Page 4]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
+6.2.2.  Transport of messages
+
+   It may be interesting to replace the unicasts messages by multicast
+   (the issues of multicast on the public Internet do no apply here
+   since we envision work under only one organisation).  For instance,
+   if we use DoT for the transport of messages and if there are 1,000
+   servers, having a full mesh of DoT connections may be too much.
+
+   Is the use of a DHT reasonable?  Why not MQTT [MQTT] which is well
+   suited for publish-by-one/consume-by-many?  What about protocols like
+   protocol buffers?  TODO What about dnstap?
+
+6.2.3.  Packing of messages
+
+   It could be interesting to optimize by packing the data in a C-DNS
+   [RFC8618] flow, sent with TCP (with TLS) or QUIC.  (Of course, other
+   formats/protocols are possible.)
+
+7.  References
+
+7.1.  Normative References
+
+   [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
+              STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
+              <https://www.rfc-editor.org/info/rfc1034>.
+
+   [RFC1035]  Mockapetris, P., "Domain names - implementation and
+              specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
+              November 1987, <https://www.rfc-editor.org/info/rfc1035>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC8945]  Dupont, F., Morris, S., Vixie, P., Eastlake 3rd, D.,
+              Gudmundsson, O., and B. Wellington, "Secret Key
+              Transaction Authentication for DNS (TSIG)", STD 93,
+              RFC 8945, DOI 10.17487/RFC8945, November 2020,
+              <https://www.rfc-editor.org/info/rfc8945>.
+
+   [RFC9499]  Hoffman, P. and K. Fujiwara, "DNS Terminology", BCP 219,
+              RFC 9499, DOI 10.17487/RFC9499, March 2024,
+              <https://www.rfc-editor.org/info/rfc9499>.
+
+
+
+Bortzmeyer              Expires 17 September 2025               [Page 5]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
+7.2.  Informative References
+
+   [RFC8020]  Bortzmeyer, S. and S. Huque, "NXDOMAIN: There Really Is
+              Nothing Underneath", RFC 8020, DOI 10.17487/RFC8020,
+              November 2016, <https://www.rfc-editor.org/info/rfc8020>.
+
+   [RFC8198]  Fujiwara, K., Kato, A., and W. Kumari, "Aggressive Use of
+              DNSSEC-Validated Cache", RFC 8198, DOI 10.17487/RFC8198,
+              July 2017, <https://www.rfc-editor.org/info/rfc8198>.
+
+   [RFC8618]  Dickinson, J., Hague, J., Dickinson, S., Manderson, T.,
+              and J. Bond, "Compacted-DNS (C-DNS): A Format for DNS
+              Packet Capture", RFC 8618, DOI 10.17487/RFC8618, September
+              2019, <https://www.rfc-editor.org/info/rfc8618>.
+
+   [I-D.hl-dnsop-cache-filling]
+              Hoffman, P. E. and M. Larson, "Additional Method for
+              Filling DNS Caches", Work in Progress, Internet-Draft,
+              draft-hl-dnsop-cache-filling-00, 2 March 2018,
+              <https://datatracker.ietf.org/doc/html/draft-hl-dnsop-
+              cache-filling-00>.
+
+   [MQTT]     OASIS, "MQTT Version 5.0", 2019, <https://docs.oasis-
+              open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.docx>.
+
+Acknowledgements
+
+   Original idea at the RIPE hackathon in march 2025 at the Netnod
+   office in Stockholm.
+
+Author's Address
+
+   Stéphane Bortzmeyer
+   Afnic
+   7 avenue du 8 mai 1945
+   78280 Guyancourt
+   France
+   Email: bortzmeyer+ietf@nic.fr
+   URI:   https://www.afnic.fr/
+
+
+
+
+
+
+
+
+
+
+
+
+Bortzmeyer              Expires 17 September 2025               [Page 6]
