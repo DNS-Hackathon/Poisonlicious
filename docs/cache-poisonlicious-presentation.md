@@ -48,28 +48,22 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 - **Warm-Up Delays:** New resolvers (or cold resolvers) need time to populate their caches, causing slower responses.
 
-- **Efficiency Loss:** Without data sharing between resolvers, the system becomes inefficient when the same queries are made frequently.
+- **Efficiency Reduction:** Without data sharing between resolvers, the system becomes inefficient when the same queries are made frequently.
 
 - **Environmental Impact:** More workload for the resolver, the authoritative servers and the network.
 
 ---
 
 ## The Proposed Solution:
-### Sharing Cache Information Across Resolvers
-
----
-
-## Data Format
-
-- Resolvers share cached data in the **DNS Wire Format**.
-
-- Allows seamless communication between resolvers in the same cluster.
+### Cache Update Sharing Across Resolvers
 
 ---
 
 ## Data Sharing Mechanism
 
-- When a resolver encounters a new answer, it shares it with other resolvers in the same cluster.
+- When a resolver encounters a new authoritative answer, it shares it with other resolvers in the same cluster in the **DNS Wire Format**.
+
+- Allows seamless communication between resolvers in the same cluster.
   
 ---
 
