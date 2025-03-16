@@ -95,7 +95,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ---
 
-## Achievement in hackathon
+## Achievement in Hackathon
 
 - Drafted an RFC
 - Proof-of-concept implementation in Unbound
