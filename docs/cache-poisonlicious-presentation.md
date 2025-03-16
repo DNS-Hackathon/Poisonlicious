@@ -55,7 +55,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 ---
 
 ## The Proposed Solution:
-### Cache Update Signaling Across Resolvers
+### Cache Update Sharing Across Resolvers
 
 ---
 
