@@ -50,6 +50,8 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 - **Efficiency Loss:** Without data sharing between resolvers, the system becomes inefficient when the same queries are made frequently.
 
+- **Environmental Impact:** More workload for the resolver, the authoritative servers and the network.
+
 ---
 
 ## The Proposed Solution:
