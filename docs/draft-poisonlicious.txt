@@ -4,8 +4,9 @@
 
 Internet Engineering Task Force                            S. Bortzmeyer
 Internet-Draft                                                     Afnic
-Intended status: Informational                             16 March 2025
-Expires: 17 September 2025
+Intended status: Informational                                 W. Toorop
+Expires: 17 September 2025                                    NLnet Labs
+                                                           16 March 2025
 
 
                  Synchronizing caches of DNS resolvers
@@ -52,8 +53,7 @@ Copyright Notice
 
 
 
-
-Bortzmeyer              Expires 17 September 2025               [Page 1]
+Bortzmeyer & Toorop     Expires 17 September 2025               [Page 1]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -77,7 +77,7 @@ Table of Contents
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
      7.2.  Informative References  . . . . . . . . . . . . . . . . .   6
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Bortzmeyer              Expires 17 September 2025               [Page 2]
+Bortzmeyer & Toorop     Expires 17 September 2025               [Page 2]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -165,7 +165,7 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
-Bortzmeyer              Expires 17 September 2025               [Page 3]
+Bortzmeyer & Toorop     Expires 17 September 2025               [Page 3]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -221,7 +221,7 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
-Bortzmeyer              Expires 17 September 2025               [Page 4]
+Bortzmeyer & Toorop     Expires 17 September 2025               [Page 4]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -277,7 +277,7 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
-Bortzmeyer              Expires 17 September 2025               [Page 5]
+Bortzmeyer & Toorop     Expires 17 September 2025               [Page 5]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -312,7 +312,7 @@ Acknowledgements
    Original idea at the RIPE hackathon in march 2025 at the Netnod
    office in Stockholm.
 
-Author's Address
+Authors' Addresses
 
    Stéphane Bortzmeyer
    Afnic
@@ -323,14 +323,14 @@ Author's Address
    URI:   https://www.afnic.fr/
 
 
+   Willem Toorop
+   NLnet Labs
+   Science Park 400
+   1098 XH Amsterdam
+   Netherlands
+   Email: willem@nlnetlabs.nl
+   URI:   https://nlnetlabs.nl/
 
 
 
-
-
-
-
-
-
-
-Bortzmeyer              Expires 17 September 2025               [Page 6]
+Bortzmeyer & Toorop     Expires 17 September 2025               [Page 6]

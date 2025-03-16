@@ -32,7 +32,23 @@
         <uri>https://www.afnic.fr/</uri>
       </address>
     </author>
-   
+
+    <author fullname="Willem Toorop" initials="W." surname="Toorop">
+
+      <organization>NLnet Labs</organization>
+      <address>
+        <postal>
+          <street>Science Park 400</street>
+          <city>Amsterdam</city>
+          <code>1098 XH</code>
+          <country>NL</country>
+          <!-- Uses two letter country code -->
+        </postal>
+        <email>willem@nlnetlabs.nl</email>
+        <uri>https://nlnetlabs.nl/</uri>
+      </address>
+    </author>
+
     <date year="2025"/>
 
     <area>General</area>
