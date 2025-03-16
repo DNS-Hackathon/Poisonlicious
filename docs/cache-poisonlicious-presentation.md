@@ -104,7 +104,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ## Key Takeaways
 
-- By sharing cached DNS data in the DNS wire format, DNS resolvers can serve data faster, reduce unnecessary root DNS queries, and improve overall system efficiency.
+- By sharing cached DNS data in the DNS wire format, DNS resolvers can serve data faster, reduce unnecessary Authoritative DNS queries, and improve overall system and network efficiency.
 
 - The approach helps DNS networks scale more efficiently while keeping the internet’s DNS traffic sustainable.
 
