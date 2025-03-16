@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-poisonlicious-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+
+  <front>
+    <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
+
+    <seriesInfo name="Internet-Draft" value="draft-poisonlicious-00"/>
+   
+    <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
+      
+      <organization>Afnic</organization>
+      <address>
+        <postal>
+          <street>7 avenue du 8 mai 1945</street>
+          <city>Guyancourt</city>
+          <code>78280</code>
+          <country>FR</country>
+          <!-- Uses two letter country code -->
+        </postal>        
+        <email>bortzmeyer+ietf@nic.fr</email>  
+        <uri>https://www.afnic.fr/</uri>
+      </address>
+    </author>
+   
+    <date year="2025"/>
+
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+
+    <keyword>DNS DNSSEC optimization caching</keyword>
+
+    <abstract>
+      <t>Network of cooperating and mutually trusting DNS resolvers
+      could benefit from cache sharing, where one resolver would
+      distribute the result of a resolution to other resolvers. This
+      document standardizes a protocol to do so.</t>
+    </abstract>
+ 
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+      <t>When an organisation operates a big network of DNS resolvers
+      <xref target="RFC1034"/> <xref target="RFC1035"/>, for
+      instance for an important public resolver <xref
+      target="RFC9499"/> (section 6), it may be a performance
+      improvment to distribute the result of the resolution process
+      between the resolvers. This document standardizes how to to do
+      so, using blockchains (just kidding) and unicast messages to a
+      set of pre-configured peers.
+      </t>
+      <t>TODO data from Quad9 to show that there is a caching
+      improvment to expect. Measuring the efficiency of caching
+      optimizations is hard!</t>
+      
+      <section>
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+          interpreted as described in BCP 14 <xref target="RFC2119"/>
+          <xref target="RFC8174"/> when, and only when, they appear in
+          all capitals, as shown here.</t>
+      </section>
+
+      <section>
+	<name>Terminology</name>
+        <dl newline="true">
+        <dt>Network of resolvers (TODO or resolver set?)</dt>
+        <dd>A set of resolvers working together under the same administration</dd>
+        <dt>Peer (or peer resolver)</dt>
+        <dd>One of the other resolvers in the network</dd>
+        <dt>Originating resolver</dt>
+        <dd>A resolver sending data to its peers in the network</dd>
+        <dt>Receiving resolver (or receiving peer)</dt>
+        <dd>A resolver receiving data from one of its peers in the network</dd>
+        <dt>Resolver</dt>
+        <dd>As used in <xref target="RFC9499"/> section 6</dd>
+      </dl>
+      </section>
+      
+    </section>
+
+    <section>
+      <name>The protocol</name>
+      <t>When completing a successful DNS resolution, the resolver
+      transmits a DNS message (with the Q/R bit set, since it is a
+      response) to the pre-configured peers, authenticating with TSIG
+      <xref target="RFC8945"/>. TODO SIG0? DoT? No acknowledgment is
+      sent or expected.</t>
+      <t>The resolver must send
+      only data that it is sure of (for instance by DNSSEC valitaion
+      or because it came with the AA bit from the queried
+      server). Since all of the netwok of resolvers are in the same
+      organizational domain, they MUST agree on the same policy for
+      this assessment.</t>
+      <t>Messages of this protocol are distinguished from other DNS
+      messages by the TSIG key they use (which must therefore be
+      specific to this protocol). TODO or by a dedicated port?</t>
+      <t>This message MAY be the message received by the resolver from
+      the authoritative name servers or it MAY be a new message with
+      data composed from data already obtained by the resolver. TODO
+      privacy risks when sending the question section? Force its elision?</t>
+      <t>The EDNS section MUST be a new one, created to fit the needs
+      of successful transmission to the peer. TODO what about ECS?</t>
+      <t>Each peer then MAY store the data in
+      its cache. The peer is not supposed to do DNSSEC validation
+      (there is not always all the necessary data in the
+      message). TODO cache only what is in the Answer section? See
+      above about assessing the trustiness of the data.</t>
+    </section>
+    
+    <section anchor="IANA">
+      <name>IANA Considerations</name>
+      <t>None. [RFC-Editor: you may delete this section]</t>
+    </section>
+    
+    <section anchor="Security">
+      <name>Security Considerations</name>
+      <t>The integrity and authenticity of the cached data is of
+      course critical. DNSSEC would help but it is not yet universally
+      deployed and, moreover, the peer resolvers should not have to
+      redo the validation. So, trust between the peer resolvers is
+      expected. One way to do so is to have all of them under the same
+      organisational authority, as mandated here.</t>
+      <t>The channel between peers must be protected, preferrably with
+      cryptography (currently, TSIG is mandatory).</t>
+      <t>Encryption is less important than authentication since we
+      transmit only public data. Nevertheless, it is better to be sure
+      that the channel between the peers is not open to snooping.</t>
+    </section>
+    
+    <section anchor="Operation">
+      <name>Operational Considerations</name>
+      <t>It is reminded that all resolvers in the network need to trust
+      each other, probably being in the same administrative
+      domain. This specification is not meant to be deployed between
+      unrelated resolvers.</t>
+      <t>The netwok of peer resolvers have to be configured
+      out-of-band before. The way to do it is out-of-scope for this specification.</t>
+    </section>
+
+    <section anchor="related-future">
+      <name>Related and future work</name>
+      <section>
+	<name>Related work</name>
+	<t><xref target="I-D.hl-dnsop-cache-filling"/> describes a
+	mechanism to fill DNS caches with data. The format is, like in
+	this document, standard DNS as ween on the wire.</t>
+      </section>
+      <section>
+      <name>Future work</name>
+      <section>
+	<name>Negative answers</name>
+	<t>TODO What to do about them? Transmit them? (Be careful of
+	the risk of overloading receving peers for instance when there
+	is a dictionary attack.) Can a receiving peer use <xref
+	target="RFC8020"/> an/or <xref target="RFC8198"/> to
+	synthetize negative answers since it did not validate data itself?</t>
+      </section>
+      <section>
+	<name>Transport of messages</name>
+         <t>It may be interesting to replace the unicasts messages by
+         multicast (the issues of multicast on the public Internet do
+	 no apply here since we envision work under only one
+	 organisation). For instance, if we use DoT for the transport
+	 of messages and if there are 1,000 servers, having a full
+	 mesh of DoT connections may be too much.</t>
+         <t>Is the use of a DHT reasonable? Why not MQTT
+	 <xref target="MQTT"/> which is well suited for
+	 publish-by-one/consume-by-many? What about protocols like protocol buffers? TODO What about dnstap?</t>
+      </section>
+      <section>
+	<name>Packing of messages</name>
+	<t>It could be interesting to optimize by packing the data in a C-DNS <xref
+      target="RFC8618"/> flow, sent with TCP (with TLS) or
+      QUIC. (Of course, other formats/protocols are possible.)</t>
+      </section>
+    </section>
+    </section>
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include
+            href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml"/>
+        <xi:include
+            href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml"/>
+        <xi:include
+            href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+        <xi:include
+            href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8945.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9499.xml"/>        
+      </references>
+
+      <references>
+        <name>Informative References</name>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8198.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8618.xml"/>
+        <xi:include
+	    href="https://datatracker.ietf.org/doc/bibxml3/draft-hl-dnsop-cache-filling.xml"/>
+        <reference anchor="MQTT" target="https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.docx">
+          <front>
+            <title>MQTT Version 5.0</title>
+            <author>
+              <organization>OASIS</organization>
+            </author>
+            <date year="2019"/>
+          </front>
+        </reference>       
+	<!-- https://mqtt.org/mqtt-specification/ -->
+      </references>
+    </references>
+ 
+        <section anchor="Acknowledgements" numbered="false">
+      <name>Acknowledgements</name>
+      <t>Original idea at the RIPE hackathon in march 2025 at the
+      Netnod office in Stockholm.</t>
+    </section>
+    
+ </back>
+</rfc>
