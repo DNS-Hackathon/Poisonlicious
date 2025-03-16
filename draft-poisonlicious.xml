@@ -26,7 +26,6 @@
           <city>Guyancourt</city>
           <code>78280</code>
           <country>FR</country>
-          <!-- Uses two letter country code -->
         </postal>
         <email>bortzmeyer+ietf@nic.fr</email>
         <uri>https://www.afnic.fr/</uri>
@@ -42,7 +41,6 @@
           <city>Amsterdam</city>
           <code>1098 XH</code>
           <country>NL</country>
-          <!-- Uses two letter country code -->
         </postal>
         <email>willem@nlnetlabs.nl</email>
         <uri>https://nlnetlabs.nl/</uri>
@@ -59,7 +57,6 @@
           <city>Zürich</city>
           <code>8004</code>
           <country>CH</country>
-          <!-- Uses two letter country code -->
         </postal>
         <email>babak@farrokhi.net</email>
         <uri>https://quad9.net/</uri>
@@ -76,7 +73,6 @@
           <city>Boulder</city>
           <code>CO 80304</code>
           <country>US</country>
-          <!-- Uses two letter country code -->
         </postal>
         <email>bofh@freebsd.org</email>
         <uri>https://freebsdfoundation.org/</uri>
@@ -129,7 +125,7 @@
       <section>
 	<name>Terminology</name>
         <dl newline="true">
-        <dt>Network of resolvers (TODO or resolver set?)</dt>
+        <dt>Network of resolvers (TODO or resolver set? Or resolver cluster?)</dt>
         <dd>A set of resolvers working together under the same administration</dd>
         <dt>Peer (or peer resolver)</dt>
         <dd>One of the other resolvers in the network</dd>
@@ -138,7 +134,7 @@
         <dt>Receiving resolver (or receiving peer)</dt>
         <dd>A resolver receiving data from one of its peers in the network</dd>
         <dt>Resolver</dt>
-        <dd>As used in <xref target="RFC9499"/> section 6</dd>
+        <dd>As used in <xref section="6" sectionFormat="of" target="RFC9499"/></dd>
       </dl>
       </section>
 
@@ -154,7 +150,7 @@
       <t>The resolver must send
       only data that it is sure of (for instance by DNSSEC valitaion
       or because it came with the AA bit from the queried
-      server). Since all of the netwok of resolvers are in the same
+      server). Since all of the network of resolvers are in the same
       organizational domain, they MUST agree on the same policy for
       this assessment.</t>
       <t>Messages of this protocol are distinguished from other DNS
@@ -238,6 +234,12 @@
 	<t>It could be interesting to optimize by packing the data in a C-DNS <xref
       target="RFC8618"/> flow, sent with TCP (with TLS) or
       QUIC. (Of course, other formats/protocols are possible.)</t>
+      </section>
+      <section>
+	<name>Different responses</name>
+	<t>When the authoritative servers send different replies
+	depending on the client, the various peers may send different
+	(and under-optimized) responses to a receiving peer.</t>
       </section>
     </section>
     </section>
