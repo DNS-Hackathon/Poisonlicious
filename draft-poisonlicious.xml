@@ -182,10 +182,13 @@
       course critical. DNSSEC would help but it is not yet universally
       deployed and, moreover, the peer resolvers should not have to
       redo the validation. So, trust between the peer resolvers is
-      expected. One way to do so is to have all of them under the same
+      expected because it is the only way for the receiver to be sure
+      of the data. One way to do so is to have all of the peers under the same
       organisational authority, as mandated here.</t>
-      <t>The channel between peers must be protected, preferrably with
-      cryptography (currently, TSIG is mandatory).</t>
+      <t>For the same reason, the channel between peers must be
+      protected, preferrably with cryptography (currently, TSIG is
+      mandatory). ACL and other network techniques are of course
+      useful.</t>
       <t>Encryption is less important than authentication since we
       transmit only public data. Nevertheless, it is better to be sure
       that the channel between the peers is not open to snooping.</t>
