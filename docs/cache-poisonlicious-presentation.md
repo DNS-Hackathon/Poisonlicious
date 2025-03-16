@@ -3,7 +3,9 @@ title: Cache Poisonlicious
 tags: [Talk]
 marp: true
 theme: gaia
-class: lead
+class:
+    - lead
+    - invert
 ---
 
 # Cache Poisonlicious
@@ -19,7 +21,9 @@ https://github.com/DNS-Hackathon/Poisonlicious
 ## Large Scale Public DNS Resolvers
 
 - Multiple resolvers running in the same administrative domain
+
 - Resolvers are oblivious to the content of other resolvers' cache
+
 - A resolver must perform full resolution for a request, even though the answer is most likely known and cached by another resolver in the same cluster.
 
 ---
@@ -27,6 +31,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 ## Key Issue
 
 - **Cold Resolver:** A new or inactive resolver has to query the authoritative servers, leading to longer response times and unnecessary traffic.
+
 - **Caching:** Existing resolvers in the cluster might already have the data but cannot share it.
 
 ---
@@ -40,7 +45,9 @@ https://github.com/DNS-Hackathon/Poisonlicious
 ## Why It Matters
 
 - **DNS Traffic:** Constant requests to authoritative DNS servers increase internet traffic and strain the infrastructure.
+
 - **Warm-Up Delays:** New resolvers (or cold resolvers) need time to populate their caches, causing slower responses.
+
 - **Efficiency Loss:** Without data sharing between resolvers, the system becomes inefficient when the same queries are made frequently.
 
 ---
@@ -58,7 +65,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ---
 
-## **Data Sharing Mechanism:**
+## Data Sharing Mechanism
 
 - When a resolver encounters a new answer, it shares it with other resolvers in the same cluster.
   
@@ -99,18 +106,22 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ---
 
-## Key Takeaways:
+## Key Takeaways
 
 - By sharing cached DNS data in the DNS wire format, DNS resolvers can serve data faster, reduce unnecessary root DNS queries, and improve overall system efficiency.
+
 - The approach helps DNS networks scale more efficiently while keeping the internet’s DNS traffic sustainable.
 
 ---
 
 ## Next Steps
 
-1. **Testing & Security:** Implement tests to ensure data accuracy and address security concerns.
-2. Functional Tests - Study different scenarios in a lab (or production) environment.
-3. **Deployment:** Gradually roll out the system to a subset of DNS resolvers.
+1. **Testing & Security:** - Implement tests to ensure data accuracy and address security concerns.
+
+2. **Functional Tests** - Study different scenarios in a lab (or production) environment.
+
+3. **Deployment:** - Gradually roll out the system to a subset of DNS resolvers.
+
 4. Work with the community in IETF meetings to make this a formal standard.
 
 ---
