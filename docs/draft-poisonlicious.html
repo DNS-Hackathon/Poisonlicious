@@ -15,26 +15,25 @@
       distribute the result of a resolution to other resolvers. This
       document standardizes a protocol to do so. 
     " name="description">
-<meta content="xml2rfc 3.21.0" name="generator">
+<meta content="xml2rfc 3.28.0" name="generator">
 <meta content="DNS DNSSEC optimization caching" name="keyword">
 <meta content="draft-poisonlicious-00" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.21.0
-    Python 3.12.3
+  xml2rfc 3.28.0
+    Python 3.13.2
     ConfigArgParse 1.7
-    google-i18n-address 3.1.0
+    google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.4
-    lxml 4.9.4
-    platformdirs 4.2.2
+    Jinja2 3.1.6
+    lxml 5.3.1
+    platformdirs 4.3.6
     pycountry 24.6.1
-    PyYAML 6.0.1
-    requests 2.31.0
-    setuptools 70.1.0
-    six 1.16.0
+    PyYAML 6.0.2
+    requests 2.32.3
+    setuptools 76.0.0
     wcwidth 0.2.13
 -->
-<link href="../draft-poisonlicious.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-poisonlicious.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -409,7 +408,7 @@ hr {
 /* Fix PDF info block run off issue */
 @media print {
   #identifiers dd {
-    float: none;
+    max-width: 100%;
   }
 }
 #identifiers .authors .author {
@@ -1085,7 +1084,7 @@ table {
 ol.type-a { list-style-type: lower-alpha; }
 ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
-ol.type-I { list-style-type: lower-roman; }
+ol.type-I { list-style-type: upper-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
 and increase the contrast between border and odd row background slightly */
 table {
@@ -1165,7 +1164,7 @@ section .olCompact {
 tt, code {
   background-color: transparent;
 }
-p tt, p code, li tt, li code {
+p tt, p code, li tt, li code, dt tt, dt code {
   background-color: #f8f8f8;
 }
 /* Tweak the pre margin -- 0px doesn't come out well */
@@ -1487,10 +1486,13 @@ li > p:last-of-type:only-child {
       course critical. DNSSEC would help but it is not yet universally
       deployed and, moreover, the peer resolvers should not have to
       redo the validation. So, trust between the peer resolvers is
-      expected. One way to do so is to have all of them under the same
+      expected because it is the only way for the receiver to be sure
+      of the data. One way to do so is to have all of the peers under the same
       organisational authority, as mandated here.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The channel between peers must be protected, preferrably with
-      cryptography (currently, TSIG is mandatory).<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-2">For the same reason, the channel between peers must be
+      protected, preferrably with cryptography (currently, TSIG is
+      mandatory). ACL and other network techniques are of course
+      useful.<a href="#section-4-2" class="pilcrow">¶</a></p>
 <p id="section-4-3">Encryption is less important than authentication since we
       transmit only public data. Nevertheless, it is better to be sure
       that the channel between the peers is not open to snooping.<a href="#section-4-3" class="pilcrow">¶</a></p>
