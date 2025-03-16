@@ -6,6 +6,8 @@ Internet Engineering Task Force                            S. Bortzmeyer
 Internet-Draft                                                     Afnic
 Intended status: Informational                                 W. Toorop
 Expires: 17 September 2025                                    NLnet Labs
+                                                             B. Farrokhi
+                                                                   Quad9
                                                            16 March 2025
 
 
@@ -41,6 +43,21 @@ Copyright Notice
    Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
+
+
+
+
+
+
+
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 1]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
    license-info) in effect on the date of publication of this document.
@@ -50,27 +67,19 @@ Copyright Notice
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
 
-
-
-
-Bortzmeyer & Toorop     Expires 17 September 2025               [Page 1]
-
-Internet-Draft                Poisonlicious                   March 2025
-
-
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   2
-     1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
+     1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  The protocol  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
+   3.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
    5.  Operational Considerations  . . . . . . . . . . . . . . . . .   4
    6.  Related and future work . . . . . . . . . . . . . . . . . . .   4
      6.1.  Related work  . . . . . . . . . . . . . . . . . . . . . .   4
-     6.2.  Future work . . . . . . . . . . . . . . . . . . . . . . .   4
-       6.2.1.  Negative answers  . . . . . . . . . . . . . . . . . .   4
+     6.2.  Future work . . . . . . . . . . . . . . . . . . . . . . .   5
+       6.2.1.  Negative answers  . . . . . . . . . . . . . . . . . .   5
        6.2.2.  Transport of messages . . . . . . . . . . . . . . . .   5
        6.2.3.  Packing of messages . . . . . . . . . . . . . . . . .   5
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
@@ -92,6 +101,19 @@ Table of Contents
    TODO data from Quad9 to show that there is a caching improvment to
    expect.  Measuring the efficiency of caching optimizations is hard!
 
+
+
+
+
+
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 2]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
 1.1.  Requirements Language
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -104,15 +126,6 @@ Table of Contents
 
    Network of resolvers (TODO or resolver set?)
       A set of resolvers working together under the same administration
-
-
-
-
-
-Bortzmeyer & Toorop     Expires 17 September 2025               [Page 2]
-
-Internet-Draft                Poisonlicious                   March 2025
-
 
    Peer (or peer resolver)
       One of the other resolvers in the network
@@ -148,6 +161,15 @@ Internet-Draft                Poisonlicious                   March 2025
    composed from data already obtained by the resolver.  TODO privacy
    risks when sending the question section?  Force its elision?
 
+
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 3]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
    The EDNS section MUST be a new one, created to fit the needs of
    successful transmission to the peer.  TODO what about ECS?
 
@@ -160,15 +182,6 @@ Internet-Draft                Poisonlicious                   March 2025
 3.  IANA Considerations
 
    None.  [RFC-Editor: you may delete this section]
-
-
-
-
-
-Bortzmeyer & Toorop     Expires 17 September 2025               [Page 3]
-
-Internet-Draft                Poisonlicious                   March 2025
-
 
 4.  Security Considerations
 
@@ -204,6 +217,15 @@ Internet-Draft                Poisonlicious                   March 2025
    with data.  The format is, like in this document, standard DNS as
    ween on the wire.
 
+
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 4]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
 6.2.  Future work
 
 6.2.1.  Negative answers
@@ -212,19 +234,6 @@ Internet-Draft                Poisonlicious                   March 2025
    of overloading receving peers for instance when there is a dictionary
    attack.)  Can a receiving peer use [RFC8020] an/or [RFC8198] to
    synthetize negative answers since it did not validate data itself?
-
-
-
-
-
-
-
-
-
-Bortzmeyer & Toorop     Expires 17 September 2025               [Page 4]
-
-Internet-Draft                Poisonlicious                   March 2025
-
 
 6.2.2.  Transport of messages
 
@@ -265,6 +274,14 @@ Internet-Draft                Poisonlicious                   March 2025
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 5]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
    [RFC8945]  Dupont, F., Morris, S., Vixie, P., Eastlake 3rd, D.,
               Gudmundsson, O., and B. Wellington, "Secret Key
               Transaction Authentication for DNS (TSIG)", STD 93,
@@ -274,13 +291,6 @@ Internet-Draft                Poisonlicious                   March 2025
    [RFC9499]  Hoffman, P. and K. Fujiwara, "DNS Terminology", BCP 219,
               RFC 9499, DOI 10.17487/RFC9499, March 2024,
               <https://www.rfc-editor.org/info/rfc9499>.
-
-
-
-Bortzmeyer & Toorop     Expires 17 September 2025               [Page 5]
-
-Internet-Draft                Poisonlicious                   March 2025
-
 
 7.2.  Informative References
 
@@ -320,6 +330,14 @@ Authors' Addresses
    78280 Guyancourt
    France
    Email: bortzmeyer+ietf@nic.fr
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 6]
+
+Internet-Draft                Poisonlicious                   March 2025
+
+
    URI:   https://www.afnic.fr/
 
 
@@ -332,5 +350,43 @@ Authors' Addresses
    URI:   https://nlnetlabs.nl/
 
 
+   Babak Farrokhi
+   Quad9
+   Werdstrasse 2
+   CH-8004 Zürich
+   Switzerland
+   Email: babak@farrokhi.net
+   URI:   https://quad9.net/
 
-Bortzmeyer & Toorop     Expires 17 September 2025               [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 7]

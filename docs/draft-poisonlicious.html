@@ -7,32 +7,32 @@
 <title>Synchronizing caches of DNS resolvers</title>
 <meta content="Stéphane Bortzmeyer" name="author">
 <meta content="Willem Toorop" name="author">
+<meta content="Babak Farrokhi" name="author">
 <meta content="
        Network of cooperating and mutually trusting DNS resolvers
       could benefit from cache sharing, where one resolver would
       distribute the result of a resolution to other resolvers. This
       document standardizes a protocol to do so. 
     " name="description">
-<meta content="xml2rfc 3.21.0" name="generator">
+<meta content="xml2rfc 3.28.0" name="generator">
 <meta content="DNS DNSSEC optimization caching" name="keyword">
 <meta content="draft-poisonlicious-00" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.21.0
-    Python 3.12.3
+  xml2rfc 3.28.0
+    Python 3.13.2
     ConfigArgParse 1.7
-    google-i18n-address 3.1.0
+    google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.4
-    lxml 4.9.4
-    platformdirs 4.2.2
+    Jinja2 3.1.6
+    lxml 5.3.1
+    platformdirs 4.3.6
     pycountry 24.6.1
-    PyYAML 6.0.1
-    requests 2.31.0
-    setuptools 70.1.0
-    six 1.16.0
+    PyYAML 6.0.2
+    requests 2.32.3
+    setuptools 76.0.0
     wcwidth 0.2.13
 -->
-<link href="../draft-poisonlicious.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-poisonlicious.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -407,7 +407,7 @@ hr {
 /* Fix PDF info block run off issue */
 @media print {
   #identifiers dd {
-    float: none;
+    max-width: 100%;
   }
 }
 #identifiers .authors .author {
@@ -1083,7 +1083,7 @@ table {
 ol.type-a { list-style-type: lower-alpha; }
 ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
-ol.type-I { list-style-type: lower-roman; }
+ol.type-I { list-style-type: upper-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
 and increase the contrast between border and odd row background slightly */
 table {
@@ -1163,7 +1163,7 @@ section .olCompact {
 tt, code {
   background-color: transparent;
 }
-p tt, p code, li tt, li code {
+p tt, p code, li tt, li code, dt tt, dt code {
   background-color: #f8f8f8;
 }
 /* Tweak the pre margin -- 0px doesn't come out well */
@@ -1207,7 +1207,6 @@ li > p:last-of-type:only-child {
 }
 </style>
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
-<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
 </head>
 <body class="xml2rfc">
 <script src="metadata.min.js"></script>
@@ -1218,7 +1217,7 @@ li > p:last-of-type:only-child {
 <td class="right">March 2025</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Bortzmeyer &amp; Toorop</td>
+<td class="left">Bortzmeyer, et al.</td>
 <td class="center">Expires 17 September 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
@@ -1247,6 +1246,10 @@ li > p:last-of-type:only-child {
 <div class="author">
       <div class="author-name">W. Toorop</div>
 <div class="org">NLnet Labs</div>
+</div>
+<div class="author">
+      <div class="author-name">B. Farrokhi</div>
+<div class="org">Quad9</div>
 </div>
 </dd>
 </dl>
@@ -1653,6 +1656,22 @@ li > p:last-of-type:only-child {
 <div class="url">
 <span>URI:</span>
 <a href="https://nlnetlabs.nl/" class="url">https://nlnetlabs.nl/</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Babak Farrokhi</span></div>
+<div dir="auto" class="left"><span class="org">Quad9</span></div>
+<div dir="auto" class="left"><span class="street-address">Werdstrasse 2</span></div>
+<div dir="auto" class="left">CH-<span class="postal-code">8004</span> <span class="locality">Zürich</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">Switzerland</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:babak@farrokhi.net" class="email">babak@farrokhi.net</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="https://quad9.net/" class="url">https://quad9.net/</a>
 </div>
 </address>
 </section>

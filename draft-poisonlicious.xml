@@ -49,6 +49,24 @@
       </address>
     </author>
 
+
+    <author fullname="Babak Farrokhi" initials="B." surname="Farrokhi">
+
+      <organization>Quad9</organization>
+      <address>
+        <postal>
+          <street>Werdstrasse 2</street>
+          <city>Zürich</city>
+          <code>8004</code>
+          <country>CH</country>
+          <!-- Uses two letter country code -->
+        </postal>
+        <email>babak@farrokhi.net</email>
+        <uri>https://quad9.net/</uri>
+      </address>
+    </author>
+
+    
     <date year="2025"/>
 
     <area>General</area>
