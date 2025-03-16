@@ -7,7 +7,7 @@ class: lead
 ---
 
 # Cache Poisonlicious
-## Babak/Moin/Stephane/Willem
+## Babak/Moin/Stéphane/Willem
 https://github.com/DNS-Hackathon/Poisonlicious
 
 ---
