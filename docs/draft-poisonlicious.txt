@@ -45,13 +45,11 @@ Copyright Notice
    Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
-
-
-
-
-
-
-
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
 
 
 
@@ -60,11 +58,6 @@ Bortzmeyer, et al.      Expires 17 September 2025               [Page 1]
 Internet-Draft                Poisonlicious                   March 2025
 
 
-   This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents (https://trustee.ietf.org/
-   license-info) in effect on the date of publication of this document.
-   Please review these documents carefully, as they describe your rights
-   and restrictions with respect to this document.  Code Components
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
@@ -72,7 +65,7 @@ Internet-Draft                Poisonlicious                   March 2025
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   2
      1.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  The protocol  . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
@@ -80,15 +73,16 @@ Table of Contents
    5.  Operational Considerations  . . . . . . . . . . . . . . . . .   4
    6.  Related and future work . . . . . . . . . . . . . . . . . . .   4
      6.1.  Related work  . . . . . . . . . . . . . . . . . . . . . .   4
-     6.2.  Future work . . . . . . . . . . . . . . . . . . . . . . .   5
-       6.2.1.  Negative answers  . . . . . . . . . . . . . . . . . .   5
+     6.2.  Future work . . . . . . . . . . . . . . . . . . . . . . .   4
+       6.2.1.  Negative answers  . . . . . . . . . . . . . . . . . .   4
        6.2.2.  Transport of messages . . . . . . . . . . . . . . . .   5
        6.2.3.  Packing of messages . . . . . . . . . . . . . . . . .   5
+       6.2.4.  Different responses . . . . . . . . . . . . . . . . .   5
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
      7.2.  Informative References  . . . . . . . . . . . . . . . . .   6
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -103,9 +97,13 @@ Table of Contents
    TODO data from Quad9 to show that there is a caching improvment to
    expect.  Measuring the efficiency of caching optimizations is hard!
 
+1.1.  Requirements Language
 
-
-
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 
 
@@ -116,17 +114,9 @@ Bortzmeyer, et al.      Expires 17 September 2025               [Page 2]
 Internet-Draft                Poisonlicious                   March 2025
 
 
-1.1.  Requirements Language
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
-
 1.2.  Terminology
 
-   Network of resolvers (TODO or resolver set?)
+   Network of resolvers (TODO or resolver set?  Or resolver cluster?)
       A set of resolvers working together under the same administration
 
    Peer (or peer resolver)
@@ -139,7 +129,7 @@ Internet-Draft                Poisonlicious                   March 2025
       A resolver receiving data from one of its peers in the network
 
    Resolver
-      As used in [RFC9499] section 6
+      As used in Section 6 of [RFC9499]
 
 2.  The protocol
 
@@ -149,8 +139,8 @@ Internet-Draft                Poisonlicious                   March 2025
    DoT?  No acknowledgment is sent or expected.
 
    The resolver must send only data that it is sure of (for instance by
-   DNSSEC valitaion or because it came with the AA bit from the queried
-   server).  Since all of the netwok of resolvers are in the same
+   DNSSEC validation or because it came with the AA bit from the queried
+   server).  Since all of the network of resolvers are in the same
    organizational domain, they MUST agree on the same policy for this
    assessment.
 
@@ -161,9 +151,17 @@ Internet-Draft                Poisonlicious                   March 2025
    This message MAY be the message received by the resolver from the
    authoritative name servers or it MAY be a new message with data
    composed from data already obtained by the resolver.  TODO privacy
-   risks when sending the question section?  Force its elision?
+   risks when sending the question section?  [RFC9076] Force its
+   elision?
 
+   The EDNS section MUST be a new one, created to fit the needs of
+   successful transmission to the peer.  TODO what about ECS [RFC7871]?
 
+   Each peer then MAY store the data in its cache.  The peer is not
+   supposed to do DNSSEC validation (there is not always all the
+   necessary data in the message).  TODO cache only what is in the
+   Answer section?  See above about assessing the trustiness of the
+   data.
 
 
 
@@ -171,15 +169,6 @@ Bortzmeyer, et al.      Expires 17 September 2025               [Page 3]
 
 Internet-Draft                Poisonlicious                   March 2025
 
-
-   The EDNS section MUST be a new one, created to fit the needs of
-   successful transmission to the peer.  TODO what about ECS?
-
-   Each peer then MAY store the data in its cache.  The peer is not
-   supposed to do DNSSEC validation (there is not always all the
-   necessary data in the message).  TODO cache only what is in the
-   Answer section?  See above about assessing the trustiness of the
-   data.
 
 3.  IANA Considerations
 
@@ -217,7 +206,16 @@ Internet-Draft                Poisonlicious                   March 2025
 
    [I-D.hl-dnsop-cache-filling] describes a mechanism to fill DNS caches
    with data.  The format is, like in this document, standard DNS as
-   ween on the wire.
+   seen on the wire.
+
+6.2.  Future work
+
+6.2.1.  Negative answers
+
+   TODO What to do about them?  Transmit them?  (Be careful of the risk
+   of overloading receving peers for instance when there is a dictionary
+   attack.)  Can a receiving peer use [RFC8020] and/or [RFC8198] to
+   synthetize negative answers since it did not validate data itself?
 
 
 
@@ -228,22 +226,14 @@ Bortzmeyer, et al.      Expires 17 September 2025               [Page 4]
 Internet-Draft                Poisonlicious                   March 2025
 
 
-6.2.  Future work
-
-6.2.1.  Negative answers
-
-   TODO What to do about them?  Transmit them?  (Be careful of the risk
-   of overloading receving peers for instance when there is a dictionary
-   attack.)  Can a receiving peer use [RFC8020] an/or [RFC8198] to
-   synthetize negative answers since it did not validate data itself?
-
 6.2.2.  Transport of messages
 
-   It may be interesting to replace the unicasts messages by multicast
-   (the issues of multicast on the public Internet do no apply here
-   since we envision work under only one organisation).  For instance,
-   if we use DoT for the transport of messages and if there are 1,000
-   servers, having a full mesh of DoT connections may be too much.
+   It may be interesting to replace the unicast messages by multicast
+   [RFC5110] (the issues of multicast on the public Internet do no apply
+   here since we envision work under only one organisation).  For
+   instance, if we use DoT for the transport of messages and if there
+   are 1,000 servers, having a full mesh of DoT connections may be too
+   much.
 
    Is the use of a DHT reasonable?  Why not MQTT [MQTT] which is well
    suited for publish-by-one/consume-by-many?  What about protocols like
@@ -254,6 +244,12 @@ Internet-Draft                Poisonlicious                   March 2025
    It could be interesting to optimize by packing the data in a C-DNS
    [RFC8618] flow, sent with TCP (with TLS) or QUIC.  (Of course, other
    formats/protocols are possible.)
+
+6.2.4.  Different responses
+
+   When the authoritative servers send different replies depending on
+   the client, the various peers may send different (and under-
+   optimized) responses to a receiving peer.
 
 7.  References
 
@@ -279,6 +275,8 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
+
+
 Bortzmeyer, et al.      Expires 17 September 2025               [Page 5]
 
 Internet-Draft                Poisonlicious                   March 2025
@@ -296,6 +294,15 @@ Internet-Draft                Poisonlicious                   March 2025
 
 7.2.  Informative References
 
+   [RFC5110]  Savola, P., "Overview of the Internet Multicast Routing
+              Architecture", RFC 5110, DOI 10.17487/RFC5110, January
+              2008, <https://www.rfc-editor.org/info/rfc5110>.
+
+   [RFC7871]  Contavalli, C., van der Gaast, W., Lawrence, D., and W.
+              Kumari, "Client Subnet in DNS Queries", RFC 7871,
+              DOI 10.17487/RFC7871, May 2016,
+              <https://www.rfc-editor.org/info/rfc7871>.
+
    [RFC8020]  Bortzmeyer, S. and S. Huque, "NXDOMAIN: There Really Is
               Nothing Underneath", RFC 8020, DOI 10.17487/RFC8020,
               November 2016, <https://www.rfc-editor.org/info/rfc8020>.
@@ -309,6 +316,10 @@ Internet-Draft                Poisonlicious                   March 2025
               Packet Capture", RFC 8618, DOI 10.17487/RFC8618, September
               2019, <https://www.rfc-editor.org/info/rfc8618>.
 
+   [RFC9076]  Wicinski, T., Ed., "DNS Privacy Considerations", RFC 9076,
+              DOI 10.17487/RFC9076, July 2021,
+              <https://www.rfc-editor.org/info/rfc9076>.
+
    [I-D.hl-dnsop-cache-filling]
               Hoffman, P. E. and M. Larson, "Additional Method for
               Filling DNS Caches", Work in Progress, Internet-Draft,
@@ -318,6 +329,14 @@ Internet-Draft                Poisonlicious                   March 2025
 
    [MQTT]     OASIS, "MQTT Version 5.0", 2019, <https://docs.oasis-
               open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.docx>.
+
+
+
+
+Bortzmeyer, et al.      Expires 17 September 2025               [Page 6]
+
+Internet-Draft                Poisonlicious                   March 2025
+
 
 Acknowledgements
 
@@ -332,14 +351,6 @@ Authors' Addresses
    78280 Guyancourt
    France
    Email: bortzmeyer+ietf@nic.fr
-
-
-
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 6]
-
-Internet-Draft                Poisonlicious                   March 2025
-
-
    URI:   https://www.afnic.fr/
 
 
@@ -364,23 +375,10 @@ Internet-Draft                Poisonlicious                   March 2025
    Moin Rahman
    The FreeBSD Foundation
    3980 Broadway St
-   CO 80304 Boulder
+   Boulder,  CO 80304
    United States of America
    Email: bofh@freebsd.org
    URI:   https://freebsdfoundation.org/
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

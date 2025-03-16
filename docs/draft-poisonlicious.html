@@ -15,23 +15,24 @@
       distribute the result of a resolution to other resolvers. This
       document standardizes a protocol to do so. 
     " name="description">
-<meta content="xml2rfc 3.24.0" name="generator">
+<meta content="xml2rfc 3.21.0" name="generator">
 <meta content="DNS DNSSEC optimization caching" name="keyword">
 <meta content="draft-poisonlicious-00" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.24.0
+  xml2rfc 3.21.0
     Python 3.12.3
     ConfigArgParse 1.7
-    google-i18n-address 3.1.1
+    google-i18n-address 3.1.0
     intervaltree 3.1.0
-    Jinja2 3.1.2
-    lxml 5.3.0
-    platformdirs 4.2.0
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
     pycountry 24.6.1
     PyYAML 6.0.1
     requests 2.31.0
-    setuptools 68.1.2
-    wcwidth 0.2.5
+    setuptools 70.1.0
+    six 1.16.0
+    wcwidth 0.2.13
 -->
 <link href="../draft-poisonlicious.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1084,7 +1085,7 @@ table {
 ol.type-a { list-style-type: lower-alpha; }
 ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
-ol.type-I { list-style-type: upper-roman; }
+ol.type-I { list-style-type: lower-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
 and increase the contrast between border and odd row background slightly */
 table {
@@ -1164,7 +1165,7 @@ section .olCompact {
 tt, code {
   background-color: transparent;
 }
-p tt, p code, li tt, li code, dt tt, dt code {
+p tt, p code, li tt, li code {
   background-color: #f8f8f8;
 }
 /* Tweak the pre margin -- 0px doesn't come out well */
@@ -1357,6 +1358,9 @@ li > p:last-of-type:only-child {
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.3">
                     <p id="section-toc.1-1.6.2.2.2.3.1"><a href="#section-6.2.3" class="auto internal xref">6.2.3</a>.  <a href="#name-packing-of-messages" class="internal xref">Packing of messages</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.4">
+                    <p id="section-toc.1-1.6.2.2.2.4.1"><a href="#section-6.2.4" class="auto internal xref">6.2.4</a>.  <a href="#name-different-responses" class="internal xref">Different responses</a></p>
+</li>
                 </ul>
 </li>
             </ul>
@@ -1412,7 +1416,7 @@ li > p:last-of-type:only-child {
 <a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
         </h3>
 <span class="break"></span><dl class="dlNewline" id="section-1.2-1">
-          <dt id="section-1.2-1.1">Network of resolvers (TODO or resolver set?)</dt>
+          <dt id="section-1.2-1.1">Network of resolvers (TODO or resolver set? Or resolver cluster?)</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-1.2">A set of resolvers working together under the same administration<a href="#section-1.2-1.2" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
@@ -1429,7 +1433,7 @@ li > p:last-of-type:only-child {
 </dd>
           <dd class="break"></dd>
 <dt id="section-1.2-1.9">Resolver</dt>
-          <dd style="margin-left: 1.5em" id="section-1.2-1.10">As used in <span>[<a href="#RFC9499" class="cite xref">RFC9499</a>]</span> section 6<a href="#section-1.2-1.10" class="pilcrow">¶</a>
+          <dd style="margin-left: 1.5em" id="section-1.2-1.10">As used in <span><a href="https://rfc-editor.org/rfc/rfc9499#section-6" class="relref">Section 6</a> of [<a href="#RFC9499" class="cite xref">RFC9499</a>]</span><a href="#section-1.2-1.10" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1445,9 +1449,9 @@ li > p:last-of-type:only-child {
       <span>[<a href="#RFC8945" class="cite xref">RFC8945</a>]</span>. TODO SIG0? DoT? No acknowledgment is
       sent or expected.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">The resolver must send
-      only data that it is sure of (for instance by DNSSEC valitaion
+      only data that it is sure of (for instance by DNSSEC validation
       or because it came with the AA bit from the queried
-      server). Since all of the netwok of resolvers are in the same
+      server). Since all of the network of resolvers are in the same
       organizational domain, they MUST agree on the same policy for
       this assessment.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">Messages of this protocol are distinguished from other DNS
@@ -1456,9 +1460,10 @@ li > p:last-of-type:only-child {
 <p id="section-2-4">This message MAY be the message received by the resolver from
       the authoritative name servers or it MAY be a new message with
       data composed from data already obtained by the resolver. TODO
-      privacy risks when sending the question section? Force its elision?<a href="#section-2-4" class="pilcrow">¶</a></p>
+      privacy risks when sending the question section? <span>[<a href="#RFC9076" class="cite xref">RFC9076</a>]</span> Force its elision?<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">The EDNS section MUST be a new one, created to fit the needs
-      of successful transmission to the peer. TODO what about ECS?<a href="#section-2-5" class="pilcrow">¶</a></p>
+      of successful transmission to the peer. TODO what about ECS
+      <span>[<a href="#RFC7871" class="cite xref">RFC7871</a>]</span>?<a href="#section-2-5" class="pilcrow">¶</a></p>
 <p id="section-2-6">Each peer then MAY store the data in
       its cache. The peer is not supposed to do DNSSEC validation
       (there is not always all the necessary data in the
@@ -1515,7 +1520,7 @@ li > p:last-of-type:only-child {
         </h3>
 <p id="section-6.1-1"><span>[<a href="#I-D.hl-dnsop-cache-filling" class="cite xref">I-D.hl-dnsop-cache-filling</a>]</span> describes a
  mechanism to fill DNS caches with data. The format is, like in
- this document, standard DNS as ween on the wire.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+ this document, standard DNS as seen on the wire.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 </section>
 <section id="section-6.2">
         <h3 id="name-future-work">
@@ -1527,15 +1532,15 @@ li > p:last-of-type:only-child {
           </h4>
 <p id="section-6.2.1-1">TODO What to do about them? Transmit them? (Be careful of
  the risk of overloading receving peers for instance when there
- is a dictionary attack.) Can a receiving peer use <span>[<a href="#RFC8020" class="cite xref">RFC8020</a>]</span> an/or <span>[<a href="#RFC8198" class="cite xref">RFC8198</a>]</span> to
+ is a dictionary attack.) Can a receiving peer use <span>[<a href="#RFC8020" class="cite xref">RFC8020</a>]</span> and/or <span>[<a href="#RFC8198" class="cite xref">RFC8198</a>]</span> to
  synthetize negative answers since it did not validate data itself?<a href="#section-6.2.1-1" class="pilcrow">¶</a></p>
 </section>
 <section id="section-6.2.2">
           <h4 id="name-transport-of-messages">
 <a href="#section-6.2.2" class="section-number selfRef">6.2.2. </a><a href="#name-transport-of-messages" class="section-name selfRef">Transport of messages</a>
           </h4>
-<p id="section-6.2.2-1">It may be interesting to replace the unicasts messages by
-         multicast (the issues of multicast on the public Internet do
+<p id="section-6.2.2-1">It may be interesting to replace the unicast messages by
+         multicast <span>[<a href="#RFC5110" class="cite xref">RFC5110</a>]</span> (the issues of multicast on the public Internet do
   no apply here since we envision work under only one
   organisation). For instance, if we use DoT for the transport
   of messages and if there are 1,000 servers, having a full
@@ -1550,6 +1555,14 @@ li > p:last-of-type:only-child {
           </h4>
 <p id="section-6.2.3-1">It could be interesting to optimize by packing the data in a C-DNS <span>[<a href="#RFC8618" class="cite xref">RFC8618</a>]</span> flow, sent with TCP (with TLS) or
       QUIC. (Of course, other formats/protocols are possible.)<a href="#section-6.2.3-1" class="pilcrow">¶</a></p>
+</section>
+<section id="section-6.2.4">
+          <h4 id="name-different-responses">
+<a href="#section-6.2.4" class="section-number selfRef">6.2.4. </a><a href="#name-different-responses" class="section-name selfRef">Different responses</a>
+          </h4>
+<p id="section-6.2.4-1">When the authoritative servers send different replies
+ depending on the client, the various peers may send different
+ (and under-optimized) responses to a receiving peer.<a href="#section-6.2.4-1" class="pilcrow">¶</a></p>
 </section>
 </section>
 </section>
@@ -1594,6 +1607,14 @@ li > p:last-of-type:only-child {
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="RFC5110">[RFC5110]</dt>
+        <dd>
+<span class="refAuthor">Savola, P.</span>, <span class="refTitle">"Overview of the Internet Multicast Routing Architecture"</span>, <span class="seriesInfo">RFC 5110</span>, <span class="seriesInfo">DOI 10.17487/RFC5110</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5110">https://www.rfc-editor.org/info/rfc5110</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7871">[RFC7871]</dt>
+        <dd>
+<span class="refAuthor">Contavalli, C.</span>, <span class="refAuthor">van der Gaast, W.</span>, <span class="refAuthor">Lawrence, D.</span>, and <span class="refAuthor">W. Kumari</span>, <span class="refTitle">"Client Subnet in DNS Queries"</span>, <span class="seriesInfo">RFC 7871</span>, <span class="seriesInfo">DOI 10.17487/RFC7871</span>, <time datetime="2016-05" class="refDate">May 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7871">https://www.rfc-editor.org/info/rfc7871</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8020">[RFC8020]</dt>
         <dd>
 <span class="refAuthor">Bortzmeyer, S.</span> and <span class="refAuthor">S. Huque</span>, <span class="refTitle">"NXDOMAIN: There Really Is Nothing Underneath"</span>, <span class="seriesInfo">RFC 8020</span>, <span class="seriesInfo">DOI 10.17487/RFC8020</span>, <time datetime="2016-11" class="refDate">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8020">https://www.rfc-editor.org/info/rfc8020</a>&gt;</span>. </dd>
@@ -1605,6 +1626,10 @@ li > p:last-of-type:only-child {
 <dt id="RFC8618">[RFC8618]</dt>
         <dd>
 <span class="refAuthor">Dickinson, J.</span>, <span class="refAuthor">Hague, J.</span>, <span class="refAuthor">Dickinson, S.</span>, <span class="refAuthor">Manderson, T.</span>, and <span class="refAuthor">J. Bond</span>, <span class="refTitle">"Compacted-DNS (C-DNS): A Format for DNS Packet Capture"</span>, <span class="seriesInfo">RFC 8618</span>, <span class="seriesInfo">DOI 10.17487/RFC8618</span>, <time datetime="2019-09" class="refDate">September 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8618">https://www.rfc-editor.org/info/rfc8618</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9076">[RFC9076]</dt>
+        <dd>
+<span class="refAuthor">Wicinski, T., Ed.</span>, <span class="refTitle">"DNS Privacy Considerations"</span>, <span class="seriesInfo">RFC 9076</span>, <span class="seriesInfo">DOI 10.17487/RFC9076</span>, <time datetime="2021-07" class="refDate">July 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9076">https://www.rfc-editor.org/info/rfc9076</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.hl-dnsop-cache-filling">[I-D.hl-dnsop-cache-filling]</dt>
         <dd>
