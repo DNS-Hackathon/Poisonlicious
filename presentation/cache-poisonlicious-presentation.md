@@ -60,7 +60,7 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ## **Data Sharing Mechanism:**
 
-- When a resolver enoucnters a new answer, it shares it with other resolvers in the same cluster.
+- When a resolver encounters a new answer, it shares it with other resolvers in the same cluster.
   
 ---
 
