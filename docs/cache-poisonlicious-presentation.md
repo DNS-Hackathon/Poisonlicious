@@ -112,11 +112,11 @@ https://github.com/DNS-Hackathon/Poisonlicious
 
 ## Next Steps
 
-1. **Testing & Security:** - Implement tests to ensure data accuracy and address security concerns.
+1. **Testing & Security** - Implement tests to ensure data accuracy and address security concerns.
 
 2. **Functional Tests** - Study different scenarios in a lab (or production) environment.
 
-3. **Deployment:** - Gradually roll out the system to a subset of DNS resolvers.
+3. **Deployment** - Gradually roll out the system to a subset of DNS resolvers.
 
 4. Work with the community in IETF meetings to make this a formal standard.
 
