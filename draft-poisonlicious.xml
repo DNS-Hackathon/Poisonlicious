@@ -159,9 +159,11 @@
       <t>This message MAY be the message received by the resolver from
       the authoritative name servers or it MAY be a new message with
       data composed from data already obtained by the resolver. TODO
-      privacy risks when sending the question section? Force its elision?</t>
+      privacy risks when sending the question section? <xref
+      target="RFC9076"/> Force its elision?</t>
       <t>The EDNS section MUST be a new one, created to fit the needs
-      of successful transmission to the peer. TODO what about ECS?</t>
+      of successful transmission to the peer. TODO what about ECS
+      <xref target="RFC7871"/>?</t>
       <t>Each peer then MAY store the data in
       its cache. The peer is not supposed to do DNSSEC validation
       (there is not always all the necessary data in the
@@ -220,7 +222,7 @@
       <section>
 	<name>Transport of messages</name>
          <t>It may be interesting to replace the unicast messages by
-         multicast (the issues of multicast on the public Internet do
+         multicast <xref target="RFC5110"/> (the issues of multicast on the public Internet do
 	 no apply here since we envision work under only one
 	 organisation). For instance, if we use DoT for the transport
 	 of messages and if there are 1,000 servers, having a full
@@ -265,9 +267,12 @@
 
       <references>
         <name>Informative References</name>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5110.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7871.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8198.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8618.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9076.xml"/>
         <xi:include
 	    href="https://datatracker.ietf.org/doc/bibxml3/draft-hl-dnsop-cache-filling.xml"/>
         <reference anchor="MQTT" target="https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.docx">
