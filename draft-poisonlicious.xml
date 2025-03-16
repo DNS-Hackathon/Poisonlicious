@@ -148,7 +148,7 @@
       <xref target="RFC8945"/>. TODO SIG0? DoT? No acknowledgment is
       sent or expected.</t>
       <t>The resolver must send
-      only data that it is sure of (for instance by DNSSEC valitaion
+      only data that it is sure of (for instance by DNSSEC validation
       or because it came with the AA bit from the queried
       server). Since all of the network of resolvers are in the same
       organizational domain, they MUST agree on the same policy for
@@ -205,7 +205,7 @@
 	<name>Related work</name>
 	<t><xref target="I-D.hl-dnsop-cache-filling"/> describes a
 	mechanism to fill DNS caches with data. The format is, like in
-	this document, standard DNS as ween on the wire.</t>
+	this document, standard DNS as seen on the wire.</t>
       </section>
       <section>
       <name>Future work</name>
@@ -214,12 +214,12 @@
 	<t>TODO What to do about them? Transmit them? (Be careful of
 	the risk of overloading receving peers for instance when there
 	is a dictionary attack.) Can a receiving peer use <xref
-	target="RFC8020"/> an/or <xref target="RFC8198"/> to
+	target="RFC8020"/> and/or <xref target="RFC8198"/> to
 	synthetize negative answers since it did not validate data itself?</t>
       </section>
       <section>
 	<name>Transport of messages</name>
-         <t>It may be interesting to replace the unicasts messages by
+         <t>It may be interesting to replace the unicast messages by
          multicast (the issues of multicast on the public Internet do
 	 no apply here since we envision work under only one
 	 organisation). For instance, if we use DoT for the transport
