@@ -16,9 +16,9 @@
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
     <seriesInfo name="Internet-Draft" value="draft-poisonlicious-00"/>
-   
+
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
-      
+
       <organization>Afnic</organization>
       <address>
         <postal>
@@ -27,8 +27,8 @@
           <code>78280</code>
           <country>FR</country>
           <!-- Uses two letter country code -->
-        </postal>        
-        <email>bortzmeyer+ietf@nic.fr</email>  
+        </postal>
+        <email>bortzmeyer+ietf@nic.fr</email>
         <uri>https://www.afnic.fr/</uri>
       </address>
     </author>
@@ -66,7 +66,23 @@
       </address>
     </author>
 
-    
+
+    <author fullname="Moin Rahman" initials="M." surname="Rahman">
+
+      <organization>The FreeBSD Foundation</organization>
+      <address>
+        <postal>
+          <street>3980 Broadway St</street>
+          <city>Boulder</city>
+          <code>CO 80304</code>
+          <country>US</country>
+          <!-- Uses two letter country code -->
+        </postal>
+        <email>bofh@freebsd.org</email>
+        <uri>https://freebsdfoundation.org/</uri>
+      </address>
+    </author>
+
     <date year="2025"/>
 
     <area>General</area>
@@ -80,11 +96,11 @@
       distribute the result of a resolution to other resolvers. This
       document standardizes a protocol to do so.</t>
     </abstract>
- 
+
   </front>
 
   <middle>
-    
+
     <section>
       <name>Introduction</name>
       <t>When an organisation operates a big network of DNS resolvers
@@ -99,7 +115,7 @@
       <t>TODO data from Quad9 to show that there is a caching
       improvment to expect. Measuring the efficiency of caching
       optimizations is hard!</t>
-      
+
       <section>
         <name>Requirements Language</name>
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
@@ -125,7 +141,7 @@
         <dd>As used in <xref target="RFC9499"/> section 6</dd>
       </dl>
       </section>
-      
+
     </section>
 
     <section>
@@ -156,12 +172,12 @@
       message). TODO cache only what is in the Answer section? See
       above about assessing the trustiness of the data.</t>
     </section>
-    
+
     <section anchor="IANA">
       <name>IANA Considerations</name>
       <t>None. [RFC-Editor: you may delete this section]</t>
     </section>
-    
+
     <section anchor="Security">
       <name>Security Considerations</name>
       <t>The integrity and authenticity of the cached data is of
@@ -176,7 +192,7 @@
       transmit only public data. Nevertheless, it is better to be sure
       that the channel between the peers is not open to snooping.</t>
     </section>
-    
+
     <section anchor="Operation">
       <name>Operational Considerations</name>
       <t>It is reminded that all resolvers in the network need to trust
@@ -232,7 +248,7 @@
       <name>References</name>
       <references>
         <name>Normative References</name>
-        
+
         <xi:include
             href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml"/>
         <xi:include
@@ -242,7 +258,7 @@
         <xi:include
             href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8945.xml"/>
-	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9499.xml"/>        
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9499.xml"/>
       </references>
 
       <references>
@@ -260,16 +276,16 @@
             </author>
             <date year="2019"/>
           </front>
-        </reference>       
+        </reference>
 	<!-- https://mqtt.org/mqtt-specification/ -->
       </references>
     </references>
- 
+
         <section anchor="Acknowledgements" numbered="false">
       <name>Acknowledgements</name>
       <t>Original idea at the RIPE hackathon in march 2025 at the
       Netnod office in Stockholm.</t>
     </section>
-    
+
  </back>
 </rfc>
