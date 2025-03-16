@@ -89,8 +89,8 @@
       <name>Introduction</name>
       <t>When an organisation operates a big network of DNS resolvers
       <xref target="RFC1034"/> <xref target="RFC1035"/>, for
-      instance for an important public resolver <xref
-      target="RFC9499"/> (section 6), it may be a performance
+      instance for an important public resolver (<xref
+      section="6" sectionFormat="of" target="RFC9499"/>), it may be a performance
       improvment to distribute the result of the resolution process
       between the resolvers. This document standardizes how to to do
       so, using blockchains (just kidding) and unicast messages to a

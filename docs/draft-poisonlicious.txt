@@ -92,7 +92,7 @@ Table of Contents
 
    When an organisation operates a big network of DNS resolvers
    [RFC1034] [RFC1035], for instance for an important public resolver
-   [RFC9499] (section 6), it may be a performance improvment to
+   (Section 6 of [RFC9499]), it may be a performance improvment to
    distribute the result of the resolution process between the
    resolvers.  This document standardizes how to to do so, using
    blockchains (just kidding) and unicast messages to a set of pre-
