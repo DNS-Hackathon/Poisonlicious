@@ -5,16 +5,16 @@
 Internet Engineering Task Force                            S. Bortzmeyer
 Internet-Draft                                                     Afnic
 Intended status: Informational                                 W. Toorop
-Expires: 17 September 2025                                    NLnet Labs
+Expires: 18 September 2025                                    NLnet Labs
                                                              B. Farrokhi
                                                                    Quad9
                                                                M. Rahman
                                                   The FreeBSD Foundation
-                                                           16 March 2025
+                                                           17 March 2025
 
 
                  Synchronizing caches of DNS resolvers
-                         draft-poisonlicious-00
+                   draft-bortzmeyer-poisonlicious-00
 
 Abstract
 
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 September 2025.
+   This Internet-Draft will expire on 18 September 2025.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 1]
+Bortzmeyer, et al.      Expires 18 September 2025               [Page 1]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 2]
+Bortzmeyer, et al.      Expires 18 September 2025               [Page 2]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -165,7 +165,7 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 3]
+Bortzmeyer, et al.      Expires 18 September 2025               [Page 3]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -221,7 +221,7 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 4]
+Bortzmeyer, et al.      Expires 18 September 2025               [Page 4]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -277,7 +277,7 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 5]
+Bortzmeyer, et al.      Expires 18 September 2025               [Page 5]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -333,7 +333,7 @@ Internet-Draft                Poisonlicious                   March 2025
 
 
 
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 6]
+Bortzmeyer, et al.      Expires 18 September 2025               [Page 6]
 
 Internet-Draft                Poisonlicious                   March 2025
 
@@ -389,4 +389,4 @@ Authors' Addresses
 
 
 
-Bortzmeyer, et al.      Expires 17 September 2025               [Page 7]
+Bortzmeyer, et al.      Expires 18 September 2025               [Page 7]
