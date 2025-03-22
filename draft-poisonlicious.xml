@@ -4,7 +4,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-bortzmeyer-poisonlicious-00"
+  docName="draft-bortzmeyer-poisonlicious-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -15,7 +15,7 @@
   <front>
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
-    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-poisonlicious-00"/>
+    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-poisonlicious-01"/>
 
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
 
@@ -168,7 +168,12 @@
       its cache. The peer is not supposed to do DNSSEC validation
       (there is not always all the necessary data in the
       message). TODO cache only what is in the Answer section? See
-      above about assessing the trustiness of the data.</t>
+      above about assessing the trustiness of the data. TODO <xref
+      section="5.4.1" sectionFormat="of" target="RFC2181"/> talks
+      about the ranking of data. Should we describe it? Since it is
+      supposed to be used inside an organisation, where all peers
+      trust each other, and have a consistent policy, is it necessary?
+      The idea is that the data is as trustworthy as if you validated it yourself.</t>
     </section>
 
     <section anchor="IANA">
@@ -270,6 +275,7 @@
 
       <references>
         <name>Informative References</name>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2181.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5110.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7871.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
