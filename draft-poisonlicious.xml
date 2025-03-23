@@ -4,7 +4,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="info"
-  docName="draft-bortzmeyer-poisonlicious-01"
+  docName="draft-bortzmeyer-dnsop-poisonlicious-00"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -15,7 +15,7 @@
   <front>
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
-    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-poisonlicious-01"/>
+    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious"/>
 
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
 
@@ -299,7 +299,7 @@
 
         <section anchor="Acknowledgements" numbered="false">
       <name>Acknowledgements</name>
-      <t>Original idea at the RIPE hackathon in march 2025 at the
+      <t>Original idea at the DNS hackathon (RIPE-NCC / Netnod / DNS-OARC) in march 2025 at the
       Netnod office in Stockholm.</t>
     </section>
 
