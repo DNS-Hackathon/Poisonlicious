@@ -4,7 +4,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="exp"
-  docName="draft-bortzmeyer-dnsop-poisonlicious-00"
+  docName="draft-bortzmeyer-dnsop-poisonlicious-01"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -15,7 +15,7 @@
   <front>
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
-    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-00"/>
+    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-01"/>
 
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
 
@@ -146,7 +146,8 @@
       transmits a DNS message (with the Q/R bit set, since it is a
       response) to the pre-configured peers, authenticating with TSIG
       <xref target="RFC8945"/>. TODO SIG0? DoT? No acknowledgment is
-      sent or expected.</t>
+      sent or expected. To save work, the resolver MAY send the data only if the TTL
+      is higher than some predefined value.</t>
       <t>The resolver must send
       only data that it is sure of (for instance by DNSSEC validation
       or because it came with the AA bit from the queried
@@ -159,8 +160,7 @@
       <t>This message MAY be the message received by the resolver from
       the authoritative name servers or it MAY be a new message with
       data composed from data already obtained by the resolver. TODO
-      privacy risks when sending the question section? <xref
-      target="RFC9076"/> Force its elision?</t>
+      privacy risks when sending the question section? See <xref target="Privacy"/></t>
       <t>The EDNS section MUST be a new one, created to fit the needs
       of successful transmission to the peer. TODO what about ECS
       <xref target="RFC7871"/>?</t>
@@ -199,6 +199,19 @@
       that the channel between the peers is not open to snooping.</t>
     </section>
 
+    <section anchor="Privacy">
+      <name>Privacy Considerations</name>
+      <t>Confidentiality is currently out of scope for this
+      document. The communication between the originating resolver and
+      its receiving peers could be encrypted, for instance with DoT
+      but it is not otherwise specified.</t>
+      <t>If the originating resolver sends the original question
+      section in its messages to receiving peers, it can have bad
+      privacy consequences <xref
+      target="RFC9076"/> TODO: delete this section? Replace it with
+      dummy data?</t>
+    </section>
+    
     <section anchor="Operation">
       <name>Operational Considerations</name>
       <t>It is reminded that all resolvers in the network need to trust
@@ -229,12 +242,12 @@
       </section>
       <section>
 	<name>Transport of messages</name>
-         <t>It may be interesting to replace the unicast messages by
+         <t>Messages could be transmitted in long-lived TCP sessions, too.</t>
+         <t>If there are 1,000 servers, sending 1,000 messages, or having a full
+	 mesh of 1,000 TCP connections may be too much. It may be interesting to replace the unicast messages by
          multicast <xref target="RFC5110"/> (the issues of multicast on the public Internet do
 	 no apply here since we envision work under only one
-	 organisation). For instance, if we use DoT for the transport
-	 of messages and if there are 1,000 servers, having a full
-	 mesh of DoT connections may be too much.</t>
+	 organisation).</t>
          <t>Is the use of a DHT reasonable? Why not MQTT
 	 <xref target="MQTT"/> which is well suited for
 	 publish-by-one/consume-by-many? What about protocols like protocol buffers? TODO What about dnstap?</t>
