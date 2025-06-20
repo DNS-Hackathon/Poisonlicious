@@ -79,6 +79,26 @@
       </address>
     </author>
 
+    <author initials="O." surname="Sury" fullname="Ondrej Sury">
+      <organization showOnFrontPage="true">Internet Systems Consortium</organization>
+      <address>
+        <postal>
+          <country>Czech Republic</country>
+        </postal>
+        <email>ondrej@isc.org</email>
+      </address>
+    </author>
+
+    <author fullname="Otto Moerbeek" initials="O." surname="Moerbeek">
+      <organization>PowerDNS</organization>
+      <address>
+        <postal>
+          <country>NL</country>
+        </postal>
+        <email>otto.moerbeek@powerdns.com</email>
+      </address>
+    </author>
+
     <date year="2025"/>
 
     <area>General</area>
