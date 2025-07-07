@@ -99,6 +99,16 @@
       </address>
     </author>
 
+    <author fullname="Vladimir Cunat" initials="V." surname="Cunat">
+      <organization>CZ.NIC</organization>
+      <address>
+        <postal>
+          <country>CZ</country>
+        </postal>
+        <email>vladimir.cunat+ietf@nic.cz</email>
+      </address>
+    </author>
+
     <date year="2025"/>
 
     <area>General</area>
