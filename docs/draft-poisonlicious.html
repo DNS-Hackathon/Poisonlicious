@@ -9,31 +9,34 @@
 <meta content="Willem Toorop" name="author">
 <meta content="Babak Farrokhi" name="author">
 <meta content="Moin Rahman" name="author">
+<meta content="Ondřej Surý" name="author">
+<meta content="Otto Moerbeek" name="author">
 <meta content="
        Network of cooperating and mutually trusting DNS resolvers
       could benefit from cache sharing, where one resolver would
       distribute the result of a resolution to other resolvers. This
       document standardizes a protocol to do so. 
     " name="description">
-<meta content="xml2rfc 3.28.0" name="generator">
+<meta content="xml2rfc 3.21.0" name="generator">
 <meta content="DNS DNSSEC optimization caching" name="keyword">
-<meta content="draft-bortzmeyer-poisonlicious-00" name="ietf.draft">
+<meta content="draft-bortzmeyer-dnsop-poisonlicious-01" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.0
-    Python 3.13.2
+  xml2rfc 3.21.0
+    Python 3.12.3
     ConfigArgParse 1.7
-    google-i18n-address 3.1.1
+    google-i18n-address 3.1.0
     intervaltree 3.1.0
-    Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.3.6
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
     pycountry 24.6.1
-    PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 76.0.0
+    PyYAML 6.0.1
+    requests 2.31.0
+    setuptools 70.1.0
+    six 1.16.0
     wcwidth 0.2.13
 -->
-<link href="draft-poisonlicious.xml" rel="alternate" type="application/rfc+xml">
+<link href="../draft-poisonlicious.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -408,7 +411,7 @@ hr {
 /* Fix PDF info block run off issue */
 @media print {
   #identifiers dd {
-    max-width: 100%;
+    float: none;
   }
 }
 #identifiers .authors .author {
@@ -1084,7 +1087,7 @@ table {
 ol.type-a { list-style-type: lower-alpha; }
 ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
-ol.type-I { list-style-type: upper-roman; }
+ol.type-I { list-style-type: lower-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
 and increase the contrast between border and odd row background slightly */
 table {
@@ -1164,7 +1167,7 @@ section .olCompact {
 tt, code {
   background-color: transparent;
 }
-p tt, p code, li tt, li code, dt tt, dt code {
+p tt, p code, li tt, li code {
   background-color: #f8f8f8;
 }
 /* Tweak the pre margin -- 0px doesn't come out well */
@@ -1216,11 +1219,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Poisonlicious</td>
-<td class="right">March 2025</td>
+<td class="right">July 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bortzmeyer, et al.</td>
-<td class="center">Expires 18 September 2025</td>
+<td class="center">Expires 8 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1230,15 +1233,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Internet Engineering Task Force</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-bortzmeyer-poisonlicious-00</dd>
+<dd class="internet-draft">draft-bortzmeyer-dnsop-poisonlicious-01</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-17" class="published">17 March 2025</time>
+<time datetime="2025-07-07" class="published">7 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
-<dd class="intended-status">Informational</dd>
+<dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-18">18 September 2025</time></dd>
+<dd class="expires"><time datetime="2026-01-08">8 January 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1256,6 +1259,14 @@ li > p:last-of-type:only-child {
 <div class="author">
       <div class="author-name">M. Rahman</div>
 <div class="org">The FreeBSD Foundation</div>
+</div>
+<div class="author">
+      <div class="author-name">O. Surý</div>
+<div class="org">Internet Systems Consortium</div>
+</div>
+<div class="author">
+      <div class="author-name">O. Moerbeek</div>
+<div class="org">PowerDNS</div>
 </div>
 </dd>
 </dl>
@@ -1287,7 +1298,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1337,49 +1348,52 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-related-and-future-work" class="internal xref">Related and future work</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-related-and-future-work" class="internal xref">Related and future work</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-related-work" class="internal xref">Related work</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-related-work" class="internal xref">Related work</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-future-work" class="internal xref">Future work</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-future-work" class="internal xref">Future work</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.1">
-                    <p id="section-toc.1-1.6.2.2.2.1.1"><a href="#section-6.2.1" class="auto internal xref">6.2.1</a>.  <a href="#name-negative-answers" class="internal xref">Negative answers</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
+                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="auto internal xref">7.2.1</a>.  <a href="#name-negative-answers" class="internal xref">Negative answers</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.2">
-                    <p id="section-toc.1-1.6.2.2.2.2.1"><a href="#section-6.2.2" class="auto internal xref">6.2.2</a>.  <a href="#name-transport-of-messages" class="internal xref">Transport of messages</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.2">
+                    <p id="section-toc.1-1.7.2.2.2.2.1"><a href="#section-7.2.2" class="auto internal xref">7.2.2</a>.  <a href="#name-transport-of-messages" class="internal xref">Transport of messages</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.3">
-                    <p id="section-toc.1-1.6.2.2.2.3.1"><a href="#section-6.2.3" class="auto internal xref">6.2.3</a>.  <a href="#name-packing-of-messages" class="internal xref">Packing of messages</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.3">
+                    <p id="section-toc.1-1.7.2.2.2.3.1"><a href="#section-7.2.3" class="auto internal xref">7.2.3</a>.  <a href="#name-packing-of-messages" class="internal xref">Packing of messages</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.4">
-                    <p id="section-toc.1-1.6.2.2.2.4.1"><a href="#section-6.2.4" class="auto internal xref">6.2.4</a>.  <a href="#name-different-responses" class="internal xref">Different responses</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.4">
+                    <p id="section-toc.1-1.7.2.2.2.4.1"><a href="#section-7.2.4" class="auto internal xref">7.2.4</a>.  <a href="#name-different-responses" class="internal xref">Different responses</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
-</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1446,7 +1460,8 @@ li > p:last-of-type:only-child {
       transmits a DNS message (with the Q/R bit set, since it is a
       response) to the pre-configured peers, authenticating with TSIG
       <span>[<a href="#RFC8945" class="cite xref">RFC8945</a>]</span>. TODO SIG0? DoT? No acknowledgment is
-      sent or expected.<a href="#section-2-1" class="pilcrow">¶</a></p>
+      sent or expected. To save work, the resolver MAY send the data only if the TTL
+      is higher than some predefined value.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">The resolver must send
       only data that it is sure of (for instance by DNSSEC validation
       or because it came with the AA bit from the queried
@@ -1459,7 +1474,7 @@ li > p:last-of-type:only-child {
 <p id="section-2-4">This message MAY be the message received by the resolver from
       the authoritative name servers or it MAY be a new message with
       data composed from data already obtained by the resolver. TODO
-      privacy risks when sending the question section? <span>[<a href="#RFC9076" class="cite xref">RFC9076</a>]</span> Force its elision?<a href="#section-2-4" class="pilcrow">¶</a></p>
+      privacy risks when sending the question section? See <a href="#Privacy" class="auto internal xref">Section 5</a><a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">The EDNS section MUST be a new one, created to fit the needs
       of successful transmission to the peer. TODO what about ECS
       <span>[<a href="#RFC7871" class="cite xref">RFC7871</a>]</span>?<a href="#section-2-5" class="pilcrow">¶</a></p>
@@ -1467,7 +1482,11 @@ li > p:last-of-type:only-child {
       its cache. The peer is not supposed to do DNSSEC validation
       (there is not always all the necessary data in the
       message). TODO cache only what is in the Answer section? See
-      above about assessing the trustiness of the data.<a href="#section-2-6" class="pilcrow">¶</a></p>
+      above about assessing the trustiness of the data. TODO <span><a href="https://rfc-editor.org/rfc/rfc2181#section-5.4.1" class="relref">Section 5.4.1</a> of [<a href="#RFC2181" class="cite xref">RFC2181</a>]</span> talks
+      about the ranking of data. Should we describe it? Since it is
+      supposed to be used inside an organisation, where all peers
+      trust each other, and have a consistent policy, is it necessary?
+      The idea is that the data is as trustworthy as if you validated it yourself.<a href="#section-2-6" class="pilcrow">¶</a></p>
 </section>
 <div id="IANA">
 <section id="section-3">
@@ -1498,84 +1517,99 @@ li > p:last-of-type:only-child {
       that the channel between the peers is not open to snooping.<a href="#section-4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="Operation">
+<div id="Privacy">
 <section id="section-5">
-      <h2 id="name-operational-considerations">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
+      <h2 id="name-privacy-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
       </h2>
-<p id="section-5-1">It is reminded that all resolvers in the network need to trust
+<p id="section-5-1">Confidentiality is currently out of scope for this
+      document. The communication between the originating resolver and
+      its receiving peers could be encrypted, for instance with DoT
+      but it is not otherwise specified.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">If the originating resolver sends the original question
+      section in its messages to receiving peers, it can have bad
+      privacy consequences <span>[<a href="#RFC9076" class="cite xref">RFC9076</a>]</span> TODO: delete this section? Replace it with
+      dummy data?<a href="#section-5-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="Operation">
+<section id="section-6">
+      <h2 id="name-operational-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
+      </h2>
+<p id="section-6-1">It is reminded that all resolvers in the network need to trust
       each other, probably being in the same administrative
       domain. This specification is not meant to be deployed between
-      unrelated resolvers.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">The netwok of peer resolvers have to be configured
-      out-of-band before. The way to do it is out-of-scope for this specification.<a href="#section-5-2" class="pilcrow">¶</a></p>
+      unrelated resolvers.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">The netwok of peer resolvers have to be configured
+      out-of-band before. The way to do it is out-of-scope for this specification.<a href="#section-6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="related-future">
-<section id="section-6">
+<section id="section-7">
       <h2 id="name-related-and-future-work">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-related-and-future-work" class="section-name selfRef">Related and future work</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-related-and-future-work" class="section-name selfRef">Related and future work</a>
       </h2>
-<section id="section-6.1">
+<section id="section-7.1">
         <h3 id="name-related-work">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-related-work" class="section-name selfRef">Related work</a>
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-related-work" class="section-name selfRef">Related work</a>
         </h3>
-<p id="section-6.1-1"><span>[<a href="#I-D.hl-dnsop-cache-filling" class="cite xref">I-D.hl-dnsop-cache-filling</a>]</span> describes a
+<p id="section-7.1-1"><span>[<a href="#I-D.hl-dnsop-cache-filling" class="cite xref">I-D.hl-dnsop-cache-filling</a>]</span> describes a
  mechanism to fill DNS caches with data. The format is, like in
- this document, standard DNS as seen on the wire.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+ this document, standard DNS as seen on the wire.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 </section>
-<section id="section-6.2">
+<section id="section-7.2">
         <h3 id="name-future-work">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-future-work" class="section-name selfRef">Future work</a>
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-future-work" class="section-name selfRef">Future work</a>
         </h3>
-<section id="section-6.2.1">
+<section id="section-7.2.1">
           <h4 id="name-negative-answers">
-<a href="#section-6.2.1" class="section-number selfRef">6.2.1. </a><a href="#name-negative-answers" class="section-name selfRef">Negative answers</a>
+<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-negative-answers" class="section-name selfRef">Negative answers</a>
           </h4>
-<p id="section-6.2.1-1">TODO What to do about them? Transmit them? (Be careful of
+<p id="section-7.2.1-1">TODO What to do about them? Transmit them? (Be careful of
  the risk of overloading receving peers for instance when there
  is a dictionary attack.) Can a receiving peer use <span>[<a href="#RFC8020" class="cite xref">RFC8020</a>]</span> and/or <span>[<a href="#RFC8198" class="cite xref">RFC8198</a>]</span> to
- synthetize negative answers since it did not validate data itself?<a href="#section-6.2.1-1" class="pilcrow">¶</a></p>
+ synthetize negative answers since it did not validate data itself?<a href="#section-7.2.1-1" class="pilcrow">¶</a></p>
 </section>
-<section id="section-6.2.2">
+<section id="section-7.2.2">
           <h4 id="name-transport-of-messages">
-<a href="#section-6.2.2" class="section-number selfRef">6.2.2. </a><a href="#name-transport-of-messages" class="section-name selfRef">Transport of messages</a>
+<a href="#section-7.2.2" class="section-number selfRef">7.2.2. </a><a href="#name-transport-of-messages" class="section-name selfRef">Transport of messages</a>
           </h4>
-<p id="section-6.2.2-1">It may be interesting to replace the unicast messages by
+<p id="section-7.2.2-1">Messages could be transmitted in long-lived TCP sessions, too.<a href="#section-7.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-2">If there are 1,000 servers, sending 1,000 messages, or having a full
+  mesh of 1,000 TCP connections may be too much. It may be interesting to replace the unicast messages by
          multicast <span>[<a href="#RFC5110" class="cite xref">RFC5110</a>]</span> (the issues of multicast on the public Internet do
   no apply here since we envision work under only one
-  organisation). For instance, if we use DoT for the transport
-  of messages and if there are 1,000 servers, having a full
-  mesh of DoT connections may be too much.<a href="#section-6.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2.2-2">Is the use of a DHT reasonable? Why not MQTT
+  organisation).<a href="#section-7.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.2.2-3">Is the use of a DHT reasonable? Why not MQTT
   <span>[<a href="#MQTT" class="cite xref">MQTT</a>]</span> which is well suited for
-  publish-by-one/consume-by-many? What about protocols like protocol buffers? TODO What about dnstap?<a href="#section-6.2.2-2" class="pilcrow">¶</a></p>
+  publish-by-one/consume-by-many? What about protocols like protocol buffers? TODO What about dnstap?<a href="#section-7.2.2-3" class="pilcrow">¶</a></p>
 </section>
-<section id="section-6.2.3">
+<section id="section-7.2.3">
           <h4 id="name-packing-of-messages">
-<a href="#section-6.2.3" class="section-number selfRef">6.2.3. </a><a href="#name-packing-of-messages" class="section-name selfRef">Packing of messages</a>
+<a href="#section-7.2.3" class="section-number selfRef">7.2.3. </a><a href="#name-packing-of-messages" class="section-name selfRef">Packing of messages</a>
           </h4>
-<p id="section-6.2.3-1">It could be interesting to optimize by packing the data in a C-DNS <span>[<a href="#RFC8618" class="cite xref">RFC8618</a>]</span> flow, sent with TCP (with TLS) or
-      QUIC. (Of course, other formats/protocols are possible.)<a href="#section-6.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.2.3-1">It could be interesting to optimize by packing the data in a C-DNS <span>[<a href="#RFC8618" class="cite xref">RFC8618</a>]</span> flow, sent with TCP (with TLS) or
+      QUIC. (Of course, other formats/protocols are possible.)<a href="#section-7.2.3-1" class="pilcrow">¶</a></p>
 </section>
-<section id="section-6.2.4">
+<section id="section-7.2.4">
           <h4 id="name-different-responses">
-<a href="#section-6.2.4" class="section-number selfRef">6.2.4. </a><a href="#name-different-responses" class="section-name selfRef">Different responses</a>
+<a href="#section-7.2.4" class="section-number selfRef">7.2.4. </a><a href="#name-different-responses" class="section-name selfRef">Different responses</a>
           </h4>
-<p id="section-6.2.4-1">When the authoritative servers send different replies
+<p id="section-7.2.4-1">When the authoritative servers send different replies
  depending on the client, the various peers may send different
- (and under-optimized) responses to a receiving peer.<a href="#section-6.2.4-1" class="pilcrow">¶</a></p>
+ (and under-optimized) responses to a receiving peer.<a href="#section-7.2.4-1" class="pilcrow">¶</a></p>
 </section>
 </section>
 </section>
 </div>
-<section id="section-7">
+<section id="section-8">
       <h2 id="name-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
-<section id="section-7.1">
+<section id="section-8.1">
         <h3 id="name-normative-references">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="RFC1034">[RFC1034]</dt>
@@ -1604,11 +1638,15 @@ li > p:last-of-type:only-child {
 <dd class="break"></dd>
 </dl>
 </section>
-<section id="section-7.2">
+<section id="section-8.2">
         <h3 id="name-informative-references">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="RFC2181">[RFC2181]</dt>
+        <dd>
+<span class="refAuthor">Elz, R.</span> and <span class="refAuthor">R. Bush</span>, <span class="refTitle">"Clarifications to the DNS Specification"</span>, <span class="seriesInfo">RFC 2181</span>, <span class="seriesInfo">DOI 10.17487/RFC2181</span>, <time datetime="1997-07" class="refDate">July 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2181">https://www.rfc-editor.org/info/rfc2181</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5110">[RFC5110]</dt>
         <dd>
 <span class="refAuthor">Savola, P.</span>, <span class="refTitle">"Overview of the Internet Multicast Routing Architecture"</span>, <span class="seriesInfo">RFC 5110</span>, <span class="seriesInfo">DOI 10.17487/RFC5110</span>, <time datetime="2008-01" class="refDate">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5110">https://www.rfc-editor.org/info/rfc5110</a>&gt;</span>. </dd>
@@ -1648,7 +1686,7 @@ li > p:last-of-type:only-child {
       <h2 id="name-acknowledgements">
 <a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
-<p id="appendix-A-1">Original idea at the RIPE hackathon in march 2025 at the
+<p id="appendix-A-1">Original idea at the DNS hackathon (RIPE-NCC / Netnod / DNS-OARC) in march 2025 at the
       Netnod office in Stockholm.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1722,6 +1760,24 @@ li > p:last-of-type:only-child {
 <div class="url">
 <span>URI:</span>
 <a href="https://freebsdfoundation.org/" class="url">https://freebsdfoundation.org/</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Ondřej Surý</span></div>
+<div dir="auto" class="left"><span class="org">Internet Systems Consortium</span></div>
+<div dir="auto" class="left"><span class="country-name">Czech Republic</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:ondrej@isc.org" class="email">ondrej@isc.org</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Otto Moerbeek</span></div>
+<div dir="auto" class="left"><span class="org">PowerDNS</span></div>
+<div dir="auto" class="left"><span class="country-name">Netherlands</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:otto.moerbeek@powerdns.com" class="email">otto.moerbeek@powerdns.com</a>
 </div>
 </address>
 </section>
