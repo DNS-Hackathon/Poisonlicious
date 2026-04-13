@@ -4,7 +4,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="exp"
-  docName="draft-bortzmeyer-dnsop-poisonlicious-01"
+  docName="draft-bortzmeyer-dnsop-poisonlicious-03"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -15,7 +15,7 @@
   <front>
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
-    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-01"/>
+    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-03"/>
 
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
 
@@ -99,7 +99,7 @@
       </address>
     </author>
 
-    <date year="2025"/>
+    <date year="2026" month="April" day="13"/>
 
     <area>General</area>
     <workgroup>Internet Engineering Task Force</workgroup>
@@ -125,12 +125,9 @@
       section="6" sectionFormat="of" target="RFC9499"/>), it may be a performance
       improvment to distribute the result of the resolution process
       between the resolvers. This document standardizes how to to do
-      so, using blockchains (just kidding) and unicast messages to a
+      so, using unicast messages to a
       set of pre-configured peers.
       </t>
-      <t>TODO data from Quad9 to show that there is a caching
-      improvment to expect. Measuring the efficiency of caching
-      optimizations is hard!</t>
 
       <section>
         <name>Requirements Language</name>
@@ -145,7 +142,7 @@
       <section>
 	<name>Terminology</name>
         <dl newline="true">
-        <dt>Network of resolvers (TODO or resolver set? Or resolver cluster?)</dt>
+        <dt>Network of resolvers</dt>
         <dd>A set of resolvers working together under the same administration</dd>
         <dt>Peer (or peer resolver)</dt>
         <dd>One of the other resolvers in the network</dd>
@@ -165,7 +162,7 @@
       <t>When completing a successful DNS resolution, the resolver
       transmits a DNS message (with the Q/R bit set, since it is a
       response) to the pre-configured peers, authenticating with TSIG
-      <xref target="RFC8945"/>. TODO SIG0? DoT? No acknowledgment is
+      <xref target="RFC8945"/>. No acknowledgment is
       sent or expected. To save work, the resolver MAY send the data only if the TTL
       is higher than some predefined value.</t>
       <t>The resolver must send
@@ -174,26 +171,28 @@
       server). Since all of the network of resolvers are in the same
       organizational domain, they MUST agree on the same policy for
       this assessment.</t>
+      <t>Negative answers (<xref target="RFC9499"/>, section 3) MUST
+      NOT be
+      transmitted to peers.</t>
       <t>Messages of this protocol are distinguished from other DNS
       messages by the TSIG key they use (which must therefore be
-      specific to this protocol). TODO or by a dedicated port?</t>
+      specific to this protocol).</t>
       <t>This message MAY be the message received by the resolver from
       the authoritative name servers or it MAY be a new message with
-      data composed from data already obtained by the resolver. TODO
-      privacy risks when sending the question section? See <xref target="Privacy"/></t>
+      data composed from data already obtained by the resolver, for
+      instance without the question section (this would help a bit
+      with privacy <xref target="Privacy"/>).</t>
       <t>The EDNS section MUST be a new one, created to fit the needs
-      of successful transmission to the peer. TODO what about ECS
-      <xref target="RFC7871"/>?</t>
+      of successful transmission to the peer.</t>
       <t>Each peer then MAY store the data in
       its cache. The peer is not supposed to do DNSSEC validation
       (there is not always all the necessary data in the
-      message). TODO cache only what is in the Answer section? See
-      above about assessing the trustiness of the data. TODO <xref
-      section="5.4.1" sectionFormat="of" target="RFC2181"/> talks
-      about the ranking of data. Should we describe it? Since it is
-      supposed to be used inside an organisation, where all peers
-      trust each other, and have a consistent policy, is it necessary?
-      The idea is that the data is as trustworthy as if you validated it yourself.</t>
+      message). After all, the goal is to save work for the peers, so  <xref
+      section="5.4.1" sectionFormat="of" target="RFC2181"/> does not
+      apply here. (Remember all peers
+      trust each other, and have a consistent policy.
+      The data is as trustworthy as if you validated it yourself.) The
+      receiver MAY cache only what is in the Answer section.</t>
     </section>
 
     <section anchor="IANA">
@@ -223,19 +222,21 @@
       <name>Privacy Considerations</name>
       <t>Confidentiality is currently out of scope for this
       document. The communication between the originating resolver and
-      its receiving peers could be encrypted, for instance with DoT
+      its receiving peers could be encrypted, for instance with DoT <xref
+	target="RFC7858"/>
       but it is not otherwise specified.</t>
       <t>If the originating resolver sends the original question
-      section in its messages to receiving peers, it can have bad
+      section in its messages to receiving peers, it can have
       privacy consequences <xref
-      target="RFC9076"/> TODO: delete this section? Replace it with
-      dummy data?</t>
+      target="RFC9076"/>. These consequences are limited since all the
+      peers are under the same administration, anyway. The originator MAY remove this section or replace it with
+      dummy data.</t>
     </section>
     
     <section anchor="Operation">
       <name>Operational Considerations</name>
       <t>It is reminded that all resolvers in the network need to trust
-      each other, probably being in the same administrative
+      each other, being in the same administrative
       domain. This specification is not meant to be deployed between
       unrelated resolvers.</t>
       <t>The netwok of peer resolvers have to be configured
@@ -253,12 +254,41 @@
       <section>
       <name>Future work</name>
       <section>
+	<name>Actual measurement</name>
+	<t>Measuring the efficiency of caching
+      optimizations is hard because the performance depend a lot on
+      the actual queries sent and their timeline. It would be interesting to test on real-world data to
+	measure the improvment brought by this technology.</t>
+      </section>
+      <section>
 	<name>Negative answers</name>
-	<t>TODO What to do about them? Transmit them? (Be careful of
-	the risk of overloading receving peers for instance when there
-	is a dictionary attack.) Can a receiving peer use <xref
+	<t>If in the future, we may allow negative answers to be
+	sent, which would permit the receivers to use <xref
 	target="RFC8020"/> and/or <xref target="RFC8198"/> to
-	synthetize negative answers since it did not validate data itself?</t>
+	synthetize negative answers.</t>
+	<t>Be careful of
+	the risk of overloading receving peers for instance when there
+	is a dictionary attack.</t>
+      </section>
+      <section>
+	<name>ECS</name>
+	<t>Today, we don't transmit the EDNS record since EDNS is not
+	end-to-end. But ECS
+      <xref target="RFC7871"/> may be an important information for the
+      participating resolvers.</t>
+      </section>
+      <section>
+	<name>Authentication of messages</name>
+	<t>Today, we authenticate only with TSIG <xref
+	target="RFC8945"/>. SIG(0) <xref target="RFC2931"/> or DoT <xref
+	target="RFC7858"/> may be
+	interesting improvements in the future.</t>
+      </section>
+      <section>
+	<name>Dispatching of messages</name>
+	<t>Today, messages following this specification are sent to
+	the proper handler based on the TSIG key used. It could be an
+	interesting alternative to use a separate transport port instead.</t>
       </section>
       <section>
 	<name>Transport of messages</name>
@@ -268,9 +298,10 @@
          multicast <xref target="RFC5110"/> (the issues of multicast on the public Internet do
 	 no apply here since we envision work under only one
 	 organisation).</t>
-         <t>Is the use of a DHT reasonable? Why not MQTT
+         <t>Other protocols may be considered such as MQTT
 	 <xref target="MQTT"/> which is well suited for
-	 publish-by-one/consume-by-many? What about protocols like protocol buffers? TODO What about dnstap?</t>
+	 publish-by-one/consume-by-many, raw protocol buffers <xref
+	 target="GPB"/> or dnstap <xref target="dnstap"/> over them.</t>
       </section>
       <section>
 	<name>Packing of messages</name>
@@ -309,7 +340,9 @@
       <references>
         <name>Informative References</name>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2181.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2931.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5110.xml"/>
+	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7858.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7871.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
 	<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8198.xml"/>
@@ -327,6 +360,23 @@
           </front>
         </reference>
 	<!-- https://mqtt.org/mqtt-specification/ -->
+        <reference anchor="GPB"
+		   target="https://protobuf.dev/">
+	  <front>
+	    <title>Protocol Buffers</title>
+            <author>
+	      <organization>Google Developers</organization>
+	    </author>
+	  </front>
+	</reference>
+        <reference anchor="dnstap"
+		   target="https://dnstap.info/">
+	  <front>
+	    <title>dnstap</title>
+	    <author fullname="Robert Edmonds"/>
+	    <date year="2014"/>
+	  </front>
+	</reference>
       </references>
     </references>
 
