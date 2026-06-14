@@ -304,7 +304,10 @@
          <t>Other protocols may be considered such as MQTT
 	 <xref target="MQTT"/> which is well suited for
 	 publish-by-one/consume-by-many, raw protocol buffers <xref
-	 target="GPB"/> or dnstap <xref target="dnstap"/> over them.</t>
+	 target="GPB"/> or dnstap <xref target="dnstap"/> over
+	 them.</t>
+	 <t>Also, a different organisation of the network of
+	 resolvers could be done in a hub-and-spoke way, in the future.</t>
       </section>
       <section>
 	<name>Packing of messages</name>
