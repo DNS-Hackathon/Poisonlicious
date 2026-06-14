@@ -4,7 +4,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="exp"
-  docName="draft-bortzmeyer-dnsop-poisonlicious-03"
+  docName="draft-bortzmeyer-dnsop-poisonlicious-04-BETA"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -15,7 +15,7 @@
   <front>
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
-    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-03"/>
+    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-04-BETA"/>
 
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
 
@@ -99,7 +99,7 @@
       </address>
     </author>
 
-    <date year="2026" month="April" day="23"/>
+    <date year="2026" month="June" day="16"/>
 
     <area>General</area>
     <workgroup>Internet Engineering Task Force</workgroup>
@@ -107,7 +107,7 @@
     <keyword>DNS DNSSEC optimization caching</keyword>
 
     <abstract>
-      <t>Network of cooperating and mutually trusting DNS resolvers
+      <t>Networks of cooperating and mutually trusting DNS resolvers
       could benefit from cache sharing, where one resolver would
       distribute the result of a resolution to other resolvers. This
       document standardizes a protocol to do so.</t>
@@ -177,11 +177,14 @@
       <t>Messages of this protocol are distinguished from other DNS
       messages by the TSIG key they use (which must therefore be
       specific to this protocol).</t>
-      <t>This message MAY be the message received by the resolver from
-      the authoritative name servers or it MAY be a new message with
-      data composed from data already obtained by the resolver, for
-      instance without the question section (this would help a bit
-      with privacy <xref target="Privacy"/>).</t>
+      <t>This message MUST be a new message (not the message received by the resolver from
+      the authoritative name servers) with
+      data composed from data already obtained and validated by the
+      originating resolver. It
+      MUST contain an Answer section and MAY contain other sections. 
+      (So, the Question section is not mandatory, and including it
+      would have consequences
+      with privacy <xref target="Privacy"/>.)</t>
       <t>The EDNS section MUST be a new one, created to fit the needs
       of successful transmission to the peer.</t>
       <t>Each peer then MAY store the data in
@@ -229,7 +232,7 @@
       section in its messages to receiving peers, it can have
       privacy consequences <xref
       target="RFC9076"/>. These consequences are limited since all the
-      peers are under the same administration, anyway. The originator MAY remove this section or replace it with
+      peers are under the same administration, anyway. The originator SHOULD remove this section or replace it with
       dummy data.</t>
     </section>
     
