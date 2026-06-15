@@ -182,9 +182,7 @@
       data composed from data already obtained and validated by the
       originating resolver. It
       MUST contain an Answer section and MAY contain other sections. 
-      (So, the Question section is not mandatory, and including it
-      would have consequences
-      with privacy <xref target="Privacy"/>.)</t>
+      (So, the Question section is not mandatory.)</t>
       <t>The EDNS section MUST be a new one, created to fit the needs
       of successful transmission to the peer.</t>
       <t>Each peer then MAY store the data in
@@ -231,7 +229,7 @@
       <t>If the originating resolver sends the original question
       section in its messages to receiving peers, it can have
       privacy consequences <xref
-      target="RFC9076"/>. These consequences are limited since all the
+      target="RFC9076"/>, for instance in the case of negative answers. These consequences are limited since all the
       peers are under the same administration, anyway. The originator SHOULD remove this section or replace it with
       dummy data.</t>
     </section>
