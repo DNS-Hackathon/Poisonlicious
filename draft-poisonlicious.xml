@@ -4,7 +4,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="exp"
-  docName="draft-bortzmeyer-dnsop-poisonlicious-04-BETA"
+  docName="draft-bortzmeyer-dnsop-poisonlicious-04"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -15,7 +15,7 @@
   <front>
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
-    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-04-BETA"/>
+    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-04"/>
 
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
 
