@@ -124,7 +124,9 @@
       instance for an important public resolver (<xref
       section="6" sectionFormat="of" target="RFC9499"/>), it may be a performance
       improvment to distribute the result of the resolution process
-      between the resolvers. This document standardizes how to to do
+      between the resolvers. The same applies to resolvers operated by
+      distinct organisations which have agreed to cooperate. This
+      document standardizes how to to do
       so, using unicast messages to a
       set of pre-configured peers.
       </t>
@@ -143,7 +145,8 @@
         <name>Terminology</name>
         <dl newline="true">
         <dt>Network of resolvers</dt>
-        <dd>A set of resolvers working together under the same administration</dd>
+        <dd>A set of mutually trusting resolvers working together under a
+        common policy, often but not necessarily under the same administration</dd>
         <dt>Peer (or peer resolver)</dt>
         <dd>One of the other resolvers in the network</dd>
         <dt>Originating resolver</dt>
@@ -168,9 +171,11 @@
       <t>The resolver must send
       only data that it is sure of (for instance by DNSSEC validation
       or because it came with the AA bit from the queried
-      server). Since all of the network of resolvers are in the same
-      organizational domain, they <bcp14>MUST</bcp14> agree on the same policy for
-      this assessment.</t>
+      server). All the resolvers of the network <bcp14>MUST</bcp14> agree on
+      the same policy for this assessment. When they are not under the same
+      administration, this policy <bcp14>MUST</bcp14> be agreed explicitly
+      before deployment, since it cannot be inferred from a shared
+      administrative practice.</t>
       <t>Negative answers (<xref target="RFC9499"/>, section 3)
       <bcp14>MUST NOT</bcp14> be
       transmitted to peers.</t>
@@ -192,7 +197,9 @@
       section="5.4.1" sectionFormat="of" target="RFC2181"/> does not
       apply here. (Remember all peers
       trust each other, and have a consistent policy.
-      The data is as trustworthy as if you validated it yourself.) The
+      The data is as trustworthy as if you validated it yourself.) A resolver
+      which cannot rely on its peers applying the agreed policy
+      <bcp14>MUST NOT</bcp14> accept their data. The
       receiver <bcp14>MAY</bcp14> cache only what is in the Answer section.</t>
     </section>
 
@@ -208,12 +215,16 @@
       deployed and, moreover, the peer resolvers should not have to
       redo the validation. So, trust between the peer resolvers is
       expected because it is the only way for the receiver to be sure
-      of the data. One way to do so is to have all of the peers under the same
-      organisational authority, as mandated here.</t>
+      of the data. Having all of the peers under the same administration is the
+      simplest way to obtain this trust, but it is not the only one.</t>
       <t>For the same reason, the channel between peers must be
       protected, preferrably with cryptography (currently, TSIG is
       mandatory). ACL and other network techniques are of course
       useful.</t>
+      <t>Sharing one TSIG key across the whole network lets any peer impersonate
+      any other (<xref section="10" sectionFormat="of" target="RFC8945"/>). Using
+      a distinct key per pair of peers is more important when the peers are not
+      under the same administration.</t>
       <t>Encryption is less important than authentication since we
       transmit only public data. Nevertheless, it is better to be sure
       that the channel between the peers is not open to snooping.</t>
@@ -229,16 +240,19 @@
       <t>If the originating resolver sends the original question
       section in its messages to receiving peers, it can have
       privacy consequences <xref
-      target="RFC9076"/>, for instance in the case of negative answers. These consequences are limited since all the
-      peers are under the same administration, anyway. The originator <bcp14>SHOULD</bcp14> remove this section or replace it with
-      dummy data.</t>
+      target="RFC9076"/>, for instance in the case of negative answers. When all
+      the peers are under the same administration, these consequences are
+      limited, and the originator <bcp14>SHOULD</bcp14> remove this section or
+      replace it with dummy data. When the peers are under distinct
+      administrations, the question section would disclose the queries of one
+      party's clients to another, and the originator <bcp14>MUST</bcp14> remove
+      it or replace it with dummy data.</t>
     </section>
     
     <section anchor="Operation">
       <name>Operational Considerations</name>
       <t>It is reminded that all resolvers in the network need to trust
-      each other, being in the same administrative
-      domain. This specification is not meant to be deployed between
+      each other. This specification is not meant to be deployed between
       unrelated resolvers.</t>
       <t>The netwok of peer resolvers have to be configured
       out-of-band before. The way to do it is out-of-scope for this specification.</t>
@@ -298,7 +312,8 @@
          mesh of 1,000 TCP connections may be too much. It may be interesting to replace the unicast messages by
          multicast <xref target="RFC5110"/> (the issues of multicast on the public Internet do
          no apply here since we envision work under only one
-         organisation).</t>
+         administration; a network spanning several administrations would have
+         to face them).</t>
          <t>Other protocols may be considered such as MQTT
          <xref target="MQTT"/> which is well suited for
          publish-by-one/consume-by-many, raw protocol buffers <xref
