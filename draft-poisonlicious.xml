@@ -164,10 +164,14 @@
       <name>The protocol</name>
       <t>When completing a successful DNS resolution, the resolver
       transmits a DNS message (with the Q/R bit set, since it is a
-      response) to the pre-configured peers, authenticating with TSIG
-      <xref target="RFC8945"/>. No acknowledgment is
+      response) to the pre-configured peers. No acknowledgment is
       sent or expected. To save work, the resolver <bcp14>MAY</bcp14> send the data only if the TTL
       is higher than some predefined value.</t>
+      <t>TSIG <xref target="RFC8945"/> is mandatory to implement but optional to
+      use, following <xref section="7" sectionFormat="of" target="RFC3365"/>.
+      Implementations <bcp14>MUST</bcp14> support it, so that peers always have
+      one authentication mechanism in common. Whether a given network of
+      resolvers enables it is outside of the scope of this document.</t>
       <t>The resolver must send
       only data that it is sure of (for instance by DNSSEC validation
       or because it came with the AA bit from the queried
@@ -179,9 +183,10 @@
       <t>Negative answers (<xref target="RFC9499"/>, section 3)
       <bcp14>MUST NOT</bcp14> be
       transmitted to peers.</t>
-      <t>Messages of this protocol are distinguished from other DNS
-      messages by the TSIG key they use (which must therefore be
-      specific to this protocol).</t>
+      <t>When TSIG is used, messages of this protocol are distinguished from
+      other DNS messages by the TSIG key, which <bcp14>MUST</bcp14> therefore be
+      specific to this protocol. Peers that do not use TSIG need another way to
+      distinguish these messages, for instance a dedicated port.</t>
       <t>This message <bcp14>MUST</bcp14> be a new message (not the message received by the resolver from
       the authoritative name servers) with
       data composed from data already obtained and validated by the
@@ -218,9 +223,8 @@
       of the data. Having all of the peers under the same administration is the
       simplest way to obtain this trust, but it is not the only one.</t>
       <t>For the same reason, the channel between peers must be
-      protected, preferrably with cryptography (currently, TSIG is
-      mandatory). ACL and other network techniques are of course
-      useful.</t>
+      protected, preferrably with cryptography. ACL and other network
+      techniques are of course useful.</t>
       <t>Sharing one TSIG key across the whole network lets any peer impersonate
       any other (<xref section="10" sectionFormat="of" target="RFC8945"/>). Using
       a distinct key per pair of peers is more important when the peers are not
@@ -294,16 +298,16 @@
       </section>
       <section>
         <name>Authentication of messages</name>
-        <t>Today, we authenticate only with TSIG <xref
-        target="RFC8945"/>. SIG(0) <xref target="RFC2931"/> or DoT <xref
-        target="RFC7858"/> may be
-        interesting improvements in the future.</t>
+        <t>Standardizing how peers select an alternative to TSIG, such as
+        SIG(0) <xref target="RFC2931"/> or DoT <xref target="RFC7858"/>, is
+        future work.</t>
       </section>
       <section>
         <name>Dispatching of messages</name>
         <t>Today, messages following this specification are sent to
         the proper handler based on the TSIG key used. It could be an
-        interesting alternative to use a separate transport port instead.</t>
+        interesting alternative to use a separate transport port instead, which
+        would also serve peers that do not use TSIG.</t>
       </section>
       <section>
         <name>Transport of messages</name>
@@ -360,6 +364,7 @@
         <name>Informative References</name>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2181.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2931.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3365.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5110.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7858.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7871.xml"/>
