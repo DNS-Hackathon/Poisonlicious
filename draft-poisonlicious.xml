@@ -123,10 +123,10 @@
       <xref target="RFC1034"/> <xref target="RFC1035"/>, for
       instance for an important public resolver (<xref
       section="6" sectionFormat="of" target="RFC9499"/>), it may be a performance
-      improvment to distribute the result of the resolution process
+      improvement to distribute the result of the resolution process
       between the resolvers. The same applies to resolvers operated by
       distinct organisations which have agreed to cooperate. This
-      document standardizes how to to do
+      document standardizes how to do
       so, using unicast messages to a
       set of pre-configured peers.
       </t>
@@ -227,7 +227,7 @@
       of the data. Having all of the peers under the same administration is the
       simplest way to obtain this trust, but it is not the only one.</t>
       <t>For the same reason, the channel between peers must be
-      protected, preferrably with cryptography. ACL and other network
+      protected, preferably with cryptography. ACL and other network
       techniques are of course useful.</t>
       <t>Sharing one TSIG key across the whole network lets any peer impersonate
       any other (<xref section="10" sectionFormat="of" target="RFC8945"/>). Using
@@ -263,8 +263,8 @@
       <t>It is reminded that all resolvers in the network need to trust
       each other. This specification is not meant to be deployed between
       unrelated resolvers.</t>
-      <t>The netwok of peer resolvers have to be configured
-      out-of-band before. The way to do it is out-of-scope for this specification.</t>
+      <t>The network of peer resolvers has to be configured
+      out-of-band beforehand. The way to do it is out-of-scope for this specification.</t>
     </section>
 
     <section anchor="related-future">
@@ -280,18 +280,18 @@
       <section>
         <name>Actual measurement</name>
         <t>Measuring the efficiency of caching
-      optimizations is hard because the performance depend a lot on
+      optimizations is hard because the performance depends a lot on
       the actual queries sent and their timeline. It would be interesting to test on real-world data to
-        measure the improvment brought by this technology.</t>
+        measure the improvement brought by this technology.</t>
       </section>
       <section>
         <name>Negative answers</name>
-        <t>If in the future, we may allow negative answers to be
+        <t>In the future, we may allow negative answers to be
         sent, which would permit the receivers to use <xref
         target="RFC8020"/> and/or <xref target="RFC8198"/> to
-        synthetize negative answers.</t>
+        synthesize negative answers.</t>
         <t>Be careful of
-        the risk of overloading receving peers for instance when there
+        the risk of overloading receiving peers for instance when there
         is a dictionary attack.</t>
       </section>
       <section>
@@ -320,8 +320,8 @@
          <t>If there are 1,000 servers, sending 1,000 messages, or having a full
          mesh of 1,000 TCP connections may be too much. It may be interesting to replace the unicast messages by
          multicast <xref target="RFC5110"/> (the issues of multicast on the public Internet do
-         no apply here since we envision work under only one
-         administration; a network spanning several administrations would have
+         not apply here since we envision work under only one
+         administration. A network spanning several administrations would have
          to face them).</t>
          <t>Other protocols may be considered such as MQTT
          <xref target="MQTT"/> which is well suited for
