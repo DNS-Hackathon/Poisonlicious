@@ -233,18 +233,19 @@
       any other (<xref section="10" sectionFormat="of" target="RFC8945"/>). Using
       a distinct key per pair of peers is more important when the peers are not
       under the same administration.</t>
-      <t>Encryption is less important than authentication since we
-      transmit only public data. Nevertheless, it is better to be sure
-      that the channel between the peers is not open to snooping.</t>
     </section>
 
     <section anchor="Privacy">
       <name>Privacy Considerations</name>
-      <t>Confidentiality is currently out of scope for this
-      document. The communication between the originating resolver and
-      its receiving peers could be encrypted, for instance with DoT <xref
-        target="RFC7858"/>
-      but it is not otherwise specified.</t>
+      <t>The records transmitted are public, but the messages contain the names
+      that the resolvers have resolved, and therefore reveal to an eavesdropper
+      what their clients looked up <xref target="RFC9076"/>. Removing the
+      question section does not hide
+      this, since the answer section contains the owner name. Using an encrypted
+      transport, for instance DoT <xref target="RFC7858"/> or DoQ <xref
+      target="RFC9250"/>, or otherwise protecting the network path between
+      peers, defeats this leakage and is <bcp14>RECOMMENDED</bcp14> when the
+      messages travel over the public Internet.</t>
       <t>If the originating resolver sends the original question
       section in its messages to receiving peers, it can have
       privacy consequences <xref
@@ -302,9 +303,9 @@
       </section>
       <section>
         <name>Authentication of messages</name>
-        <t>Standardizing how peers select an alternative to TSIG, such as
-        SIG(0) <xref target="RFC2931"/> or DoT <xref target="RFC7858"/>, is
-        future work.</t>
+        <t>Standardizing how peers select an alternative authentication
+        mechanism, such as SIG(0) <xref target="RFC2931"/> or DoT <xref
+        target="RFC7858"/>, is future work.</t>
       </section>
       <section>
         <name>Dispatching of messages</name>
@@ -376,6 +377,7 @@
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8198.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8618.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9076.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9250.xml"/>
         <xi:include
             href="https://datatracker.ietf.org/doc/bibxml3/draft-hl-dnsop-cache-filling.xml"/>
         <reference anchor="MQTT" target="https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.docx">
