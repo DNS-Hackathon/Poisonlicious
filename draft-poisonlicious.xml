@@ -172,7 +172,7 @@
       Implementations <bcp14>MUST</bcp14> support it, so that peers always have
       one authentication mechanism in common. Whether a given network of
       resolvers enables it is outside of the scope of this document.</t>
-      <t>The resolver must send
+      <t>The resolver <bcp14>MUST</bcp14> send
       only data that it is sure of (for instance by DNSSEC validation
       or because it came with the AA bit from the queried
       server). All the resolvers of the network <bcp14>MUST</bcp14> agree on
@@ -226,9 +226,8 @@
       expected because it is the only way for the receiver to be sure
       of the data. Having all of the peers under the same administration is the
       simplest way to obtain this trust, but it is not the only one.</t>
-      <t>For the same reason, the channel between peers must be
-      protected, preferably with cryptography. ACL and other network
-      techniques are of course useful.</t>
+      <t>The channel between peers also needs protection, preferably with
+      cryptography. ACL and other network techniques are of course useful.</t>
       <t>Sharing one TSIG key across the whole network lets any peer impersonate
       any other (<xref section="10" sectionFormat="of" target="RFC8945"/>). Using
       a distinct key per pair of peers is more important when the peers are not
@@ -302,7 +301,7 @@
       participating resolvers.</t>
       </section>
       <section>
-        <name>Authentication of messages</name>
+        <name>Authentication</name>
         <t>Standardizing how peers select an alternative authentication
         mechanism, such as SIG(0) <xref target="RFC2931"/> or DoT <xref
         target="RFC7858"/>, is future work.</t>
@@ -311,8 +310,7 @@
         <name>Dispatching of messages</name>
         <t>Today, messages following this specification are sent to
         the proper handler based on the TSIG key used. It could be an
-        interesting alternative to use a separate transport port instead, which
-        would also serve peers that do not use TSIG.</t>
+        interesting alternative to use a separate transport port instead.</t>
       </section>
       <section>
         <name>Transport of messages</name>
