@@ -183,10 +183,14 @@
       <t>Negative answers (<xref target="RFC9499"/>, section 3)
       <bcp14>MUST NOT</bcp14> be
       transmitted to peers.</t>
-      <t>When TSIG is used, messages of this protocol are distinguished from
-      other DNS messages by the TSIG key, which <bcp14>MUST</bcp14> therefore be
-      specific to this protocol. Peers that do not use TSIG need another way to
-      distinguish these messages, for instance a dedicated port.</t>
+      <t>A message of this protocol is a response signed like a query. Since
+      there is no request MAC (<xref section="4.3.1" sectionFormat="of"
+      target="RFC8945"/>), the MAC <bcp14>MUST</bcp14> be computed over the
+      digest components listed for a request in <xref section="5.1"
+      sectionFormat="of" target="RFC8945"/>. This distinguishes it from an
+      ordinary DNS response. The TSIG key <bcp14>SHOULD</bcp14> nevertheless be
+      specific to this protocol. Peers that do not use TSIG need another
+      discriminator, for instance a dedicated port.</t>
       <t>This message <bcp14>MUST</bcp14> be a new message (not the message received by the resolver from
       the authoritative name servers) with
       data composed from data already obtained and validated by the
