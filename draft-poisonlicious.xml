@@ -412,6 +412,9 @@
       <name>Acknowledgements</name>
       <t>Original idea at the DNS hackathon (RIPE-NCC / Netnod / DNS-OARC) in march 2025 at the
       Netnod office in Stockholm.</t>
+      <t>The authors thank Paul Wouters, Peter Thomassen, Michael Breuer,
+      Wes Hardaker, and many other members of DNSOP for review and
+      discussions.</t>
     </section>
 
  </back>
