@@ -160,7 +160,7 @@
 
     </section>
 
-    <section>
+    <section anchor="protocol">
       <name>The protocol</name>
       <t>When completing a successful DNS resolution, the resolver
       transmits a DNS message (with the Q/R bit set, since it is a
@@ -215,6 +215,59 @@
     <section anchor="IANA">
       <name>IANA Considerations</name>
       <t>None. [RFC-Editor: you may delete this section]</t>
+    </section>
+
+    <section anchor="Implementation">
+      <name>Implementation Status</name>
+      <t>[RFC-Editor: please delete this section, and the reference to RFC 7942,
+      before publication.]</t>
+      <t>This section records the status of known implementations of the
+      protocol defined by this specification at the time of posting of this
+      Internet-Draft, and is based on a proposal described in <xref
+      target="RFC7942"/>. The description of implementations in this section is
+      intended to assist the IETF in its decision processes in progressing
+      drafts to RFCs. Please note that the listing of any individual
+      implementation here does not imply endorsement by the IETF. Furthermore,
+      no effort has been spent to verify the information presented here that was
+      supplied by IETF contributors. This is not intended as, and must not be
+      construed to be, a catalog of available implementations or their features.
+      Readers are advised to note that other implementations may exist.</t>
+      <t>According to <xref target="RFC7942"/>, "this will allow reviewers and
+      working groups to assign due consideration to documents that have the
+      benefit of running code, which may serve as evidence of valuable
+      experimentation and feedback that have made the implemented protocols more
+      mature. It is up to the individual working groups to use this information
+      as they see fit".</t>
+      <dl newline="false" spacing="compact">
+        <dt>Organization:</dt>
+        <dd>NLnet Labs</dd>
+        <dt>Implementation:</dt>
+        <dd>Unbound, in the pull request <eref
+        target="https://github.com/NLnetLabs/unbound/pull/1250"/> and the
+        repository <eref
+        target="https://github.com/DNS-Hackathon/unbound-poisonlicious"/></dd>
+        <dt>Description:</dt>
+        <dd>A "distribute" option in the "server" section of unbound.conf takes
+        the address of a peer, an optional port, and either the name of a TSIG
+        key or NOKEY. Responses that were not already in the cache are sent to
+        every configured peer.</dd>
+        <dt>Level of maturity:</dt>
+        <dd>Prototype. The pull request is still marked as a draft.</dd>
+        <dt>Coverage:</dt>
+        <dd>The message format and the TSIG signing of <xref
+        target="protocol"/> are implemented. The removal of the question section
+        required by <xref target="Privacy"/> is not.</dd>
+        <dt>Version compatibility:</dt>
+        <dd>draft-bortzmeyer-dnsop-poisonlicious-01, the most recent revision
+        when the implementation was last updated. The TSIG signing nevertheless
+        matches the rule in <xref target="protocol"/> of this revision.</dd>
+        <dt>Licensing:</dt>
+        <dd>BSD 3-Clause</dd>
+        <dt>Contact information:</dt>
+        <dd>Willem Toorop, an author of this document</dd>
+        <dt>Last update of this information:</dt>
+        <dd>November 2025</dd>
+      </dl>
     </section>
 
     <section anchor="Security">
@@ -371,6 +424,7 @@
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5110.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7858.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7871.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7942.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8198.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8618.xml"/>
