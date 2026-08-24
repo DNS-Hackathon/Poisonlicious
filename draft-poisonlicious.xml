@@ -4,7 +4,7 @@
 <rfc
   xmlns:xi="http://www.w3.org/2001/XInclude"
   category="exp"
-  docName="draft-bortzmeyer-dnsop-poisonlicious-05"
+  docName="draft-bortzmeyer-dnsop-poisonlicious-06"
   ipr="trust200902"
   obsoletes=""
   updates=""
@@ -15,7 +15,7 @@
   <front>
     <title abbrev="Poisonlicious">Synchronizing caches of DNS resolvers</title>
 
-    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-05"/>
+    <seriesInfo name="Internet-Draft" value="draft-bortzmeyer-dnsop-poisonlicious-06"/>
 
     <author fullname="Stéphane Bortzmeyer" initials="S." surname="Bortzmeyer">
 
@@ -99,7 +99,7 @@
       </address>
     </author>
 
-    <date year="2026" month="August" day="3"/>
+    <date year="2026" month="August" day="24"/>
 
     <area>General</area>
     <workgroup>Internet Engineering Task Force</workgroup>
@@ -267,6 +267,32 @@
         <dd>Willem Toorop, an author of this document</dd>
         <dt>Last update of this information:</dt>
         <dd>November 2025</dd>
+      </dl>
+      <dl newline="false" spacing="compact">
+        <dt>Organization:</dt>
+        <dd>Afnic</dd>
+        <dt>Implementation:</dt>
+        <dd><eref
+        target="https://github.com/DNS-Hackathon/Poisonlicious/tree/main/senders"/></dd>
+        <dt>Description:</dt>
+        <dd>Some very simple Python scripts showing what a resolver
+	could do to send data to a peer.</dd>
+        <dt>Level of maturity:</dt>
+        <dd>Quick and dirty prototype </dd>
+        <dt>Coverage:</dt>
+        <dd>The message format and the TSIG signing of <xref
+        target="protocol"/> are implemented. The removal of the question section
+        required by <xref target="Privacy"/> is not.</dd>
+        <dt>Version compatibility:</dt>
+        <dd>draft-bortzmeyer-dnsop-poisonlicious-01, the most recent revision
+        when the implementation was last updated. The TSIG signing nevertheless
+        matches the rule in <xref target="protocol"/> of this revision.</dd>
+        <dt>Licensing:</dt>
+        <dd>BSD 3-Clause</dd>
+        <dt>Contact information:</dt>
+        <dd>Stéphane Bortzmeyer, an author of this document</dd>
+        <dt>Last update of this information:</dt>
+        <dd>August 2026</dd>
       </dl>
     </section>
 
